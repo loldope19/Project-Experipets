@@ -6,7 +6,7 @@ Experipets is a virtual pet management game currently in its early prototype sta
 
 The game features a unique visual style where the pet and its interface are presented on a virtual computer screen within a 3D environment.
 
-[image](https://github.com/user-attachments/assets/f1838792-7f89-46d0-be72-0c1243004cd3)
+![alt-text](https://github.com/user-attachments/assets/f1838792-7f89-46d0-be72-0c1243004cd3 "Experipets Sample")
 
 
 ### Current Basic Features (Prototype v0.1)
