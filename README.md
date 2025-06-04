@@ -44,8 +44,8 @@ To get a local copy up and running, follow these simple steps.
     * Click "Open" or "Add project from disk."
     * Navigate to the cloned repository folder and select it.
 3.  **Open the main scene:**
-    * Once the project is open in the Unity Editor, navigate to the `Assets/_Project/Scenes/` folder (or your main scene's location).
-    * Open the primary gameplay scene (e.g., `MainScene.unity` or `Gameplay.unity`).
+    * Once the project is open in the Unity Editor, navigate to the `Assets/Scenes/` folder.
+    * Open the primary gameplay scene (e.g., `MainScene.unity`).
 4.  **Run the game:**
     * Press the Play button in the Unity Editor.
 
