@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private PetStats petStats;
 
     [Header("-- Inventory --")]
-    public List<ItemData> ownedItems = new List<ItemData>();
+    public List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
     private void Awake()
     {
@@ -26,32 +27,40 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(ItemData item)
     {
-        ownedItems.Add(item);
-        Debug.Log($"Added {item.itemName} to inventory.");
-        // trigger event for update ui here
+        InventorySlot slot = inventorySlots.FirstOrDefault(s => s.item == item);
+
+        if (slot != null)
+        {
+            slot.AddQuantity(1);
+        }
+        else
+        {
+            inventorySlots.Add(new InventorySlot(item, 1));
+        }
+
+        Debug.Log($"Added 1 {item.itemName}. We now have {slot?.quantity ?? 1}.");
+        // call a function here to refresh the inventory UI
     }
 
     public void UseItem(ItemData item)
     {
-        if (ownedItems.Contains(item))
+        InventorySlot slot = inventorySlots.FirstOrDefault(s => s.item == item);
+
+        if (slot != null)
         {
             if (petStats != null)
             {
                 petStats.ApplyItemEffects(item);
+                slot.quantity--;
 
-                ownedItems.Remove(item);
+                if (slot.quantity <= 0)
+                {
+                    inventorySlots.Remove(slot);
+                }
 
-                Debug.Log($"Used and removed {item.itemName} from inventory.");
-                // update Inventory UI here.
+                Debug.Log($"Used {item.itemName}. {slot.quantity} remaining.");
+                // refresh the inventory UI here
             }
-            else
-            {
-                Debug.LogError("PetStats reference is not set in the InventoryManager.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Attempted to use an item the player does not own.");
         }
     }
 }

@@ -1,4 +1,4 @@
-# Project: Experipets (Working Title)
+# Project: Experipets
 
 ## 🎮 About The Project
 
@@ -9,20 +9,20 @@ The game features a unique visual style where the pet and its interface are pres
 ![alt-text](https://github.com/user-attachments/assets/f1838792-7f89-46d0-be72-0c1243004cd3 "Experipets Sample")
 
 
-### Current Basic Features (Prototype v0.1)
+### Current Features (Prototype v0.2)
 
-* **Virtual Pet:** A single "experiment" (pet) entity.
-* **Core Needs System:**
-    * **Hunger:** Decreases over time.
-    * **Cleanliness:** Decreases over time.
-    * **Happiness/Playfulness:** Decreases over time.
-* **Basic Caretaking Interactions:**
-    * **Feed Button:** Increases the pet's Hunger stat.
-    * **Shower/Clean Button:** Increases the pet's Cleanliness stat.
-    * **Play Button:** Increases the pet's Happiness stat.
-* **Visual Feedback:**
-    * A static 2D sprite representing the pet.
-    * UI Sliders visually displaying the current levels of Hunger, Cleanliness, and Happiness.
+* **Virtual Pet & Core Needs:** A single "experiment" (pet) entity with depleting Hunger, Cleanliness, and Happiness stats.
+* **3D Environment with World-Space UI**
+    * The pet and its core interface are presented on a virtual computer monitor.
+    * A **3D Shop Environment** is located behind the player, accessible via a smooth 180-degree camera rotation.
+* **Shop System:**
+    * Players can spend currency to purchase items.
+    * The shop UI is dynamically generated from item data and presented on world-space canvases attached to 3D shelves.
+    * Features a horizontally scrollable UI to accommodate many items.
+* **Inventory System:**
+    * **Item Stacking:** The inventory now correctly stacks items of the same type (e.g., "Apple x4").
+    * **Contextual Display:** The inventory panel appears at the top of the screen when the "Feed", "Clean", or "Play" buttons are pressed.
+    * **Category Filtering:** The inventory intelligently shows only the relevant items for the chosen action (e.g., only "Food" items appear when "Feed" is pressed).
 * **Unique "Pet on Screen" Environment:**
     * A basic 3D scene with a desk and computer.
     * The pet and all its UI elements are rendered on a World Space Canvas, appearing as if they are on the 3D computer's monitor.
@@ -52,26 +52,30 @@ To get a local copy up and running, follow these simple steps.
 ## 🕹️ How to Play (Current Basic Version)
 
 1.  Observe the pet (by which I mean a static image of Pou) on the virtual computer screen.
-2.  Notice the three status bars representing Hunger, Cleanliness, and Happiness. These will gradually decrease.
-3.  Click the "Feed," "Clean," or "Play" buttons on the virtual screen to replenish the corresponding need for your experiment.
+2.  **To use an item:**
+    * Click "Feed," "Clean," or "Play" to open the inventory panel with relevant items.
+    * Click the "Use" button on an item in the panel to apply its effects to the pet.
+3.  **To buy items:**
+    * Click the "Shop" button. The camera will rotate to the shop area.
+    * Click the "Buy" button on items you wish to purchase.
+    * Click the "Back" button (or similar) to rotate the camera back to the pet screen.
 
 ## 🗺️ Roadmap (Future Plans for Basic Version & Beyond)
 
 This is a very early prototype. Future development will focus on expanding the core loop and adding more depth:
 
-* **[ ] Basic Pet Animations:** Simple idle, eating, cleaning, playing animations.
+* **[X] Currency System:** *Implemented. Though not shown in UI yet.*
+* **[X] Shop System:** *Implemented.*
+* **[ ] Task/To-Do System:** (As per original concept) Implement a list of objectives for the player to complete each day.
 * **[ ] Save/Load System:** Persist pet stats and game state between sessions.
     * Implement offline progression (needs continue to change while the game is closed).
-* **[ ] More Varied Interactions:**
-    * Different types of food with varying effects.
+* **[ ] Basic Pet Animations:** Simple idle, eating, cleaning, playing animations.
+* **[ ] Advanced Interactions:**
+    * Implement drag-and-drop item usage.
     * Different cleaning actions.
     * Simple mini-games for the "Play" interaction.
-* **[ ] Currency System:** Earn currency for taking care of the pet.
-* **[ ] Shop System:** Spend currency on food, items, or basic customization.
-* **[ ] Task/To-Do System:** (As per original concept) Simple objectives for the player.
-* **[ ] Story Elements:** (As per original concept) Introduce more narrative.
+* **[ ] Story Elements:** Introduce more narrative based on the original concept.
 * **[ ] Sound Effects & Music.**
-* **[ ] Refined 3D Environment and UI.**
 
 ## 💻 Technologies Used
 

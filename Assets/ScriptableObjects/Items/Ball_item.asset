@@ -17,6 +17,7 @@ MonoBehaviour:
   cost: 20
   description: A classic rubber ball. Its high-bounce formula is calibrated to provide
     hours of physical and mental enrichment through simple play.
+  category: 1
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 30

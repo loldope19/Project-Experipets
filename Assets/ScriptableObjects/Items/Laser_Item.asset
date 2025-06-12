@@ -18,6 +18,7 @@ MonoBehaviour:
   description: A standard-issue, low-intensity laser emitter. Perfect for stimulating
     an experiment's natural predatory and tracking instincts in a safe, controlled
     manner.
+  category: 1
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 50
