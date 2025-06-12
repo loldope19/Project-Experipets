@@ -14,12 +14,6 @@ public class PetStats : MonoBehaviour
     public float cleanlinessDecayRate;
     public float happinessDecayRate;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -27,6 +21,27 @@ public class PetStats : MonoBehaviour
         cleanliness -= cleanlinessDecayRate * Time.deltaTime;
         happiness -= happinessDecayRate * Time.deltaTime;
 
+        ClampAllStats();
+    }
+
+    /// <summary>
+    /// This is the new key function for applying item effects.
+    /// The InventoryManager will call this when an item is used.
+    /// </summary>
+    /// <param name="itemData">The ScriptableObject of the item being used.</param>
+    public void ApplyItemEffects(ItemData itemData)
+    {
+        if (itemData == null) return;
+
+        hunger += itemData.hungerEffect;
+        cleanliness += itemData.cleanlinessEffect;
+        happiness += itemData.happinessEffect;
+
+        ClampAllStats();
+    }
+
+    private void ClampAllStats()
+    {
         hunger = Mathf.Clamp(hunger, 0f, 100f);
         cleanliness = Mathf.Clamp(cleanliness, 0f, 100f);
         happiness = Mathf.Clamp(happiness, 0f, 100f);
