@@ -8,6 +8,9 @@ public class UIManager : MonoBehaviour
     [Header("-- Pet Logic Manager --")]
     public PetStats petStats;
 
+    [Header("-- Task Logic Manager --")]
+    public TaskManager task;
+
     [Header("-- UI Bars --")]
     public Slider hungerBar;
     public Slider cleanlinessBar;
@@ -24,7 +27,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnFeedButtonPressed() { if (petStats != null) petStats.Feed(20); } // Example amount
-    public void OnCleanButtonPressed() { if (petStats != null) petStats.Clean(20); }
-    public void OnPlayButtonPressed() { if (petStats != null) petStats.Play(20); }
+    public void OnFeedButtonPressed() { 
+        if (petStats != null) petStats.Feed(20);
+        task.AddProgress(20, TaskCategories.Feed);
+    } // Example amount
+    public void OnCleanButtonPressed() { 
+        if (petStats != null) petStats.Clean(20);
+        task.AddProgress(20, TaskCategories.Clean);
+    }
+    public void OnPlayButtonPressed() { 
+        if (petStats != null) petStats.Play(20);
+        task.AddProgress(20, TaskCategories.Play);
+    }
 }
