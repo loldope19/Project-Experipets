@@ -23,6 +23,7 @@ public class TaskManager : MonoBehaviour
     {
         // get currentTask num from save data
         // get currentDay num from save data
+        dayCount.text = "Day " + currentDay.ToString();
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -48,16 +49,37 @@ public class TaskManager : MonoBehaviour
             AssignTask();
         }
     }
-        
-    public void AddProgress(float amount, TaskCategories taskCat)
-    {
-        if (taskCat == tasks[currentTask].taskCat)
-        {
-            taskBar.value += amount;
-            if (taskBar.value >= taskBar.maxValue)
-                nextTask();
 
+    /// <summary>
+    /// Item Effects for Task Manager
+    /// </summary>
+    /// <param name="itemData">The ScriptableObject of the item being used.</param>
+    public void ApplyItemEffects(ItemData itemData)
+    {
+        if (itemData == null) return;
+
+        float effect = 0;
+        switch (tasks[currentTask].taskCat)
+        {
+            case TaskCategories.Feed:
+                effect = itemData.hungerEffect;
+                break;
+            case TaskCategories.Clean:
+                effect = itemData.cleanlinessEffect;
+                break;
+            case TaskCategories.Play:
+                effect = itemData.happinessEffect;
+                break;
         }
+
+        AddProgress(effect);
+    }
+
+    public void AddProgress(float amount)
+    {
+        taskBar.value += amount;
+        if (taskBar.value >= taskBar.maxValue)
+            nextTask();
     } 
 
     public void nextTask()

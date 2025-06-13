@@ -13,6 +13,9 @@ public class InventoryManager : MonoBehaviour
     [Header("-- Inventory --")]
     public List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
+    [Header("-- Task Logic Manager --")]
+    public TaskManager task;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -51,6 +54,7 @@ public class InventoryManager : MonoBehaviour
             if (petStats != null)
             {
                 petStats.ApplyItemEffects(item);
+                task.ApplyItemEffects(item);
                 slot.quantity--;
 
                 if (slot.quantity <= 0)
