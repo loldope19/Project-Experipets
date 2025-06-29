@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CoreThree-BranchAThree-WithThreeChoices
+  m_EditorClassIdentifier: 
+  DialogueTag: 
+  DialogueSteps:
+  - Text: Core-Three-A1
+    DialogueOptions: []
+  - Text: Core-Three-A2
+    DialogueOptions:
+    - OptionText: BranchA
+      DialogueBranch: {fileID: 11400000, guid: b316c2606a32e5e499d3163981536df7, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchB
+      DialogueBranch: {fileID: 11400000, guid: e0d2bfc9d96c757459ade043917bfb15, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchC
+      DialogueBranch: {fileID: 11400000, guid: f15ff9f4ead587244bb0d6bb6a44ac5c, type: 2}
+      BranchStartStepIndex: 0
+  - Text: Core-Three-A3
+    DialogueOptions: []

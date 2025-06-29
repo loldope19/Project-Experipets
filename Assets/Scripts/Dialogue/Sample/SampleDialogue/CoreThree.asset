@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CoreThree
+  m_EditorClassIdentifier: 
+  DialogueTag: CoreThree
+  DialogueSteps:
+  - Text: Core-Three1
+    DialogueOptions: []
+  - Text: Core-Three2
+    DialogueOptions:
+    - OptionText: BranchA
+      DialogueBranch: {fileID: 11400000, guid: fc8dd5ebee12fba4ba621f3ad7ee1079, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchB
+      DialogueBranch: {fileID: 11400000, guid: 8852fbdc7fcf6e34fb12807f696b1b75, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchC
+      DialogueBranch: {fileID: 11400000, guid: 96240788fe809574f999e0211dae81c4, type: 2}
+      BranchStartStepIndex: 0
+  - Text: Core-Three3
+    DialogueOptions:
+    - OptionText: BranchA
+      DialogueBranch: {fileID: 11400000, guid: fc8dd5ebee12fba4ba621f3ad7ee1079, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchB
+      DialogueBranch: {fileID: 11400000, guid: 8852fbdc7fcf6e34fb12807f696b1b75, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: BranchC
+      DialogueBranch: {fileID: 11400000, guid: 96240788fe809574f999e0211dae81c4, type: 2}
+      BranchStartStepIndex: 0
