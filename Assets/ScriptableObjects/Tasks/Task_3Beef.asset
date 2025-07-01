@@ -10,8 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41cc50431af22ce4a9035d8a2fec0cd2, type: 3}
-  m_Name: Clean
+  m_Name: Task_3Beef
   m_EditorClassIdentifier: 
-  taskCat: 2
-  amount: 100
-  message: Clean your Pet
+  taskCategory: 1
+  description: Feed the Experiment 3 Beef.
+  goalType: 1
+  amountToReach: 0
+  requiredItem: {fileID: 11400000, guid: 30beb81e11bf43d4eb2a5eee5deee180, type: 2}
+  requiredItemCount: 3

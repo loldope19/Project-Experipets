@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PetCareUIManager : MonoBehaviour
 {
@@ -15,9 +16,24 @@ public class PetCareUIManager : MonoBehaviour
     [SerializeField] private PaginatedInventoryPanel playInventoryPanel;
     [SerializeField] private PaginatedInventoryPanel decorateInventoryPanel;
 
+    [Header("Needs Display UI")]
+    [SerializeField] private Slider hungerSlider;
+    [SerializeField] private Slider cleanlinessSlider;
+    [SerializeField] private Slider happinessSlider;
+
     private void Start()
     {
         HideAllSubMenus();
+    }
+
+    private void Update()
+    {
+        if (PetStats.Instance != null)
+        {
+            hungerSlider.value = PetStats.Instance.hunger;
+            cleanlinessSlider.value = PetStats.Instance.cleanliness;
+            happinessSlider.value = PetStats.Instance.happiness;
+        }
     }
 
     private void HideAllSubMenus()

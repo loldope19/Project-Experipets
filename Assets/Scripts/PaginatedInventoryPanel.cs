@@ -83,7 +83,6 @@ public class PaginatedInventoryPanel : MonoBehaviour
             itemIcon.sprite = inventorySlot.item.itemIcon;
             quantityText.text = $"x{inventorySlot.quantity}";
 
-
             ItemData currentItem = inventorySlot.item;
 
             Debug.Log(itemIcon.sprite.name + ": " + quantityText.text);

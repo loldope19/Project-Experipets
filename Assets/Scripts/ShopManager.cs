@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class FoodShopManager : MonoBehaviour
+public class ShopManager : MonoBehaviour
 {
     [Header("-- Shop Configuration --")]
     public List<ItemData> itemsForSale;
+
+    [Header("-- Currency --")]
+    [SerializeField] private CurrencyManager currencyManager;
+    public TextMeshProUGUI moneyText;
 
     [Header("-- UI References --")]
     [SerializeField] private GameObject shopPanel;
@@ -16,6 +20,11 @@ public class FoodShopManager : MonoBehaviour
     void Start()
     {
         GenerateShopItems();
+    }
+
+    private void Update()
+    {
+        moneyText.text = $"Money: {currencyManager.currentBalance}G";
     }
 
     private void GenerateShopItems()
@@ -28,7 +37,6 @@ public class FoodShopManager : MonoBehaviour
             // Note: You might need to adjust these paths based on your prefab's hierarchy.
             // e.g., slotInstance.transform.Find("ItemIcon").GetComponent<Image>();
             Image itemIcon = slotInstance.transform.Find("ItemIcon").GetComponent<Image>();
-            itemIcon.sprite = slotInstance.transform.Find("ItemIcon").GetComponent<Image>().sprite;
             TextMeshProUGUI itemNameText = slotInstance.transform.Find("ItemNameText").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI itemCostText = slotInstance.transform.Find("ItemCostText").GetComponent<TextMeshProUGUI>();
             Button buyButton = slotInstance.transform.Find("BuyButton").GetComponent<Button>();

@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class PetStats : MonoBehaviour
 {
+    public static PetStats Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     [Header("-- Pet Parameters --")]
-    public float hunger = 3;
-    public float cleanliness = 3;
-    public float happiness = 3;
+    public float hunger = 50;
+    public float cleanliness = 50;
+    public float happiness = 50;
+    private float maxStatValue = 100f;
 
     /// <summary>
     /// This is the new key function for applying item effects.
@@ -27,22 +42,23 @@ public class PetStats : MonoBehaviour
 
     public void DecayStatsForNewDay()
     {
-        hunger -= 1;
-        cleanliness -= 1;
-        happiness -= 1;
+        hunger -= 25f;
+        cleanliness -= 25f;
+        happiness -= 25f;
 
         // Make sure they don't go below zero
         ClampAllStats();
+        Debug.Log($"Stats decayed. Hunger: {hunger}, Cleanliness: {cleanliness}, Happiness: {happiness}");
     }
 
     private void ClampAllStats()
     {
-        hunger = Mathf.Clamp(hunger, 0f, 5f);
-        cleanliness = Mathf.Clamp(cleanliness, 0f, 5f);
-        happiness = Mathf.Clamp(happiness, 0f, 5f);
+        hunger = Mathf.Clamp(hunger, 0f, maxStatValue);
+        cleanliness = Mathf.Clamp(cleanliness, 0f, maxStatValue);
+        happiness = Mathf.Clamp(happiness, 0f, maxStatValue);
     }
 
-    public void Feed(float amount) { hunger = Mathf.Min(hunger + amount, 5f); }
-    public void Clean(float amount) { cleanliness = Mathf.Min(cleanliness + amount, 5f); }
-    public void Play(float amount) { happiness = Mathf.Min(happiness + amount, 5f); }
+    public void Feed(float amount) { hunger = Mathf.Min(hunger + amount, maxStatValue); }
+    public void Clean(float amount) { cleanliness = Mathf.Min(cleanliness + amount, maxStatValue); }
+    public void Play(float amount) { happiness = Mathf.Min(happiness + amount, maxStatValue); }
 }

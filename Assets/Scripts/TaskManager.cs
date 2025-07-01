@@ -1,93 +1,155 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 
 public class TaskManager : MonoBehaviour
 {
-    [SerializeField] public List<TasksScriptable> tasks;
-    public int currentTask = 0;
-    public int currentDay = 1;
+    public static TaskManager Instance { get; private set; }
 
-    [Header("-- UI --")]
-    public TMP_Text dayCount;
-    public Slider taskBar;
-    public TMP_Text taskText;
+    [Header("Task Data")]
+    [SerializeField] private List<TasksScriptable> allPossibleTasks;
+    private List<TasksScriptable> tasksForCurrentDay;
+    private Dictionary<TasksScriptable, int> itemTaskProgress;
+    private Dictionary<TasksScriptable, bool> amountTaskCompleted;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("UI References")]
+    [SerializeField] private GameObject taskListUIParent;
+    [SerializeField] private GameObject taskUIPrefab;
+
+    private void Awake()
     {
-        // get currentTask num from save data
-        // get currentDay num from save data
-        dayCount.text = "Day " + currentDay.ToString();
-        DontDestroyOnLoad(this.gameObject);
+        if (Instance != null && Instance != this) { Destroy(gameObject); }
+        else { Instance = this; }
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        AssignTask();
+        LoadTasksForDay(1);
     }
 
-    public void AssignTask()
+    private void Update()
     {
-        if (tasks.Count > currentTask) {
-            TasksScriptable task = this.tasks[currentTask];
+        CheckAmountTasks();
+    }
 
-            taskBar.maxValue = task.amount;
-            taskBar.minValue = 0;
-            taskBar.value = 0;
+    public void LoadTasksForDay(int day)
+    {
+        int tasksToSkip = (day - 1) * 3;
+        tasksForCurrentDay = allPossibleTasks.Skip(tasksToSkip).Take(3).ToList();
 
-            taskText.text = task.message;
-        }
-        else
+        itemTaskProgress = new Dictionary<TasksScriptable, int>();
+        amountTaskCompleted = new Dictionary<TasksScriptable, bool>();
+        foreach (var task in tasksForCurrentDay)
         {
-            currentTask = 0;
-            AssignTask();
+            if (task.goalType == TaskGoalType.UseSpecificItem)
+            {
+                itemTaskProgress.Add(task, 0);
+            }
+            else if (task.goalType == TaskGoalType.ReachAmount)
+            {
+                amountTaskCompleted.Add(task, false);
+            }
         }
+        UpdateTaskUI();
     }
 
-    /// <summary>
-    /// Item Effects for Task Manager
-    /// </summary>
-    /// <param name="itemData">The ScriptableObject of the item being used.</param>
-    public void ApplyItemEffects(ItemData itemData)
+    private void CheckAmountTasks()
     {
-        if (itemData == null) return;
+        if (tasksForCurrentDay == null) return;
+        bool needsUiUpdate = false;
 
-        float effect = 0;
-        switch (tasks[currentTask].taskCat)
+        foreach (var task in tasksForCurrentDay)
         {
-            case TaskCategories.Feed:
-                effect = itemData.hungerEffect;
-                break;
-            case TaskCategories.Clean:
-                effect = itemData.cleanlinessEffect;
-                break;
-            case TaskCategories.Play:
-                effect = itemData.happinessEffect;
-                break;
+            if (task.goalType == TaskGoalType.ReachAmount && !amountTaskCompleted[task])
+            {
+                float currentStatValue = 0;
+                switch (task.taskCategory)
+                {
+                    case TaskCategories.Feed:
+                        currentStatValue = PetStats.Instance.hunger;
+                        break;
+                    case TaskCategories.Clean:
+                        currentStatValue = PetStats.Instance.cleanliness;
+                        break;
+                    case TaskCategories.Play:
+                        currentStatValue = PetStats.Instance.happiness;
+                        break;
+                }
+
+                if (currentStatValue >= task.amountToReach)
+                {
+                    amountTaskCompleted[task] = true;
+                    needsUiUpdate = true;
+                }
+            }
         }
 
-        AddProgress(effect);
+        if (needsUiUpdate)
+        {
+            UpdateTaskUI();
+        }
     }
 
-    public void AddProgress(float amount)
+    public void OnItemUsed(ItemData itemUsed)
     {
-        taskBar.value += amount;
-        if (taskBar.value >= taskBar.maxValue)
-            nextTask();
-    } 
+        if (tasksForCurrentDay == null) return;
+        foreach (var task in tasksForCurrentDay)
+        {
+            if (task.goalType == TaskGoalType.UseSpecificItem && task.requiredItem == itemUsed)
+            {
+                itemTaskProgress[task]++;
+            }
+        }
+        UpdateTaskUI();
+    }
 
-    public void nextTask()
+    public bool AreAllTasksComplete()
     {
-        currentTask++;
-        currentDay++;
+        if (tasksForCurrentDay == null || tasksForCurrentDay.Count == 0) return true;
+        foreach (var task in tasksForCurrentDay)
+        {
+            if (task.goalType == TaskGoalType.UseSpecificItem)
+            {
+                if (itemTaskProgress[task] < task.requiredItemCount) return false;
+            }
+            else if (task.goalType == TaskGoalType.ReachAmount)
+            {
+                if (!amountTaskCompleted[task]) return false;
+            }
+        }
+        return true;
+    }
 
-        dayCount.text = "Day " + currentDay.ToString();
-        AssignTask();
+    private void UpdateTaskUI()
+    {
+        foreach (Transform child in taskListUIParent.transform) { Destroy(child.gameObject); }
+        if (tasksForCurrentDay == null) return;
+
+        foreach (var task in tasksForCurrentDay)
+        {
+            GameObject taskUIInstance = Instantiate(taskUIPrefab, taskListUIParent.transform);
+            TextMeshProUGUI descriptionText = taskUIInstance.transform.Find("Description_Text").GetComponent<TextMeshProUGUI>();
+
+            bool isComplete = false;
+            if (task.goalType == TaskGoalType.UseSpecificItem)
+            {
+                int currentProgress = itemTaskProgress[task];
+                int requiredCount = task.requiredItemCount;
+                descriptionText.text = $"{task.description} ({currentProgress}/{requiredCount})";
+                if (currentProgress >= requiredCount) isComplete = true;
+            }
+            else if (task.goalType == TaskGoalType.ReachAmount)
+            {
+                descriptionText.text = task.description;
+                if (amountTaskCompleted[task]) isComplete = true;
+            }
+
+            if (isComplete)
+            {
+                descriptionText.fontStyle = FontStyles.Strikethrough;
+                descriptionText.color = Color.gray;
+            }
+        }
     }
 }

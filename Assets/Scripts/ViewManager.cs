@@ -9,6 +9,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private GameObject loginView;
     [SerializeField] private GameObject desktopView;
     [SerializeField] private GameObject petCareView;
+    [SerializeField] private GameObject shopView;
     // We will add PetCare_View, Shop_View, etc. here later
 
     private void Awake()
@@ -28,6 +29,7 @@ public class ViewManager : MonoBehaviour
         loginView.SetActive(false);
         desktopView.SetActive(false);
         petCareView.SetActive(false);
+        shopView.SetActive(false);
     }
 
     public void GoToDesktopView()
@@ -46,5 +48,11 @@ public class ViewManager : MonoBehaviour
     {
         HideAllViews();
         petCareView.SetActive(true);
+    }
+
+    public void GoToShopView()
+    {
+        HideAllViews();
+        shopView.SetActive(true);
     }
 }

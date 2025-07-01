@@ -53,8 +53,8 @@ public class InventoryManager : MonoBehaviour
         {
             if (petStats != null)
             {
+                TaskManager.Instance.OnItemUsed(item);
                 petStats.ApplyItemEffects(item);
-                task.ApplyItemEffects(item);
                 slot.quantity--;
 
                 if (slot.quantity <= 0)
