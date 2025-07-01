@@ -8,7 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Desktop
-    second: {fileID: 4320742432861578679, guid: edac5247201cd074596a9aeebaaa5952, type: 3}
+    second: {fileID: 2100000, guid: c80850c261507484884ed7b4878b3301, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table
+    second: {fileID: 2100000, guid: 82aebb2ead48d0d4cb8101e14763c586, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

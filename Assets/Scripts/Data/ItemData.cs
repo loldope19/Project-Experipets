@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemCategory { Food, Toy, Cleaning, Medicine }
+public enum ItemCategory { Food, Toy, Cleaning, Medicine, Wall, Floor, Furniture }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Experipets/Item Data")]
 public class ItemData : ScriptableObject
