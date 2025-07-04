@@ -62,6 +62,9 @@ public class InventoryManager : MonoBehaviour
                     inventorySlots.Remove(slot);
                 }
 
+                if (item.category == ItemCategory.Food) PetAnimationManager.Instance.Eat();
+                if (item.category == ItemCategory.Toy) PetAnimationManager.Instance.Play();
+
                 Debug.Log($"Used {item.itemName}. {slot.quantity} remaining.");
                 // refresh the inventory UI here
             }
