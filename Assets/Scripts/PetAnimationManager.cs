@@ -22,8 +22,9 @@ public class PetAnimationManager : MonoBehaviour
         else { Instance = this; }
     }
 
-    public void StageChange()
+    public void StageChange(int stageNum)
     {
+        Stage = stageNum;
         switch(Stage)
         {
             case 1:
