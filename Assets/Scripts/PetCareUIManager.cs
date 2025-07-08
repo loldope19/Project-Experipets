@@ -24,6 +24,7 @@ public class PetCareUIManager : MonoBehaviour
     private void Start()
     {
         HideAllSubMenus();
+        DialogueManager.Instance.StartDialogue("CoreFive", 0);
     }
 
     private void Update()

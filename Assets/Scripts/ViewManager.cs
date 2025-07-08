@@ -10,7 +10,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private GameObject desktopView;
     [SerializeField] private GameObject petCareView;
     [SerializeField] private GameObject shopView;
-    // We will add PetCare_View, Shop_View, etc. here later
+    // We will add other views here later
 
     private void Awake()
     {

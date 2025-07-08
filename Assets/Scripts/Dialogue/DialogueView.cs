@@ -114,6 +114,12 @@ public class DialogueView : MonoBehaviour
         int charIndex = 0;
         float elapsedTime = 0f;
 
+        if (_currentDialogueStep == null || string.IsNullOrEmpty(_currentDialogueStep.Text))
+        {
+            ShowText(); // fallback
+            yield break;
+        }
+
         while (charIndex < _currentDialogueStep.Text.Length)
         {
             _mainTextbox.text = _currentDialogueStep.Text.Substring(0, charIndex);
@@ -124,7 +130,12 @@ public class DialogueView : MonoBehaviour
             if (elapsedTime >= _scrollTimePerCharacter)
             {
                 elapsedTime = 0f;
+
+                if (charIndex >= _currentDialogueStep.Text.Length)
+                    break;
                 charIndex++;
+                if (charIndex >= _currentDialogueStep.Text.Length)
+                    break;
 
                 // Increment again if a backslash is encountered
                 if (_currentDialogueStep.Text[charIndex] == '\\')
@@ -136,7 +147,7 @@ public class DialogueView : MonoBehaviour
                     // Keep progressing the index until a '>' is met up to the end of the text
                     while (_currentDialogueStep.Text[charIndex] != '>' && charIndex < _currentDialogueStep.Text.Length)
                         charIndex++;
-                } 
+                }
             }
         }
 
