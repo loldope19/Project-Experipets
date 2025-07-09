@@ -22,7 +22,7 @@ public class PetStats : MonoBehaviour
     public float hunger = 50;
     public float cleanliness = 50;
     public float happiness = 50;
-    private float maxStatValue = 100f;
+    private readonly float maxStatValue = 100f;
 
     /// <summary>
     /// This is the new key function for applying item effects.
@@ -38,6 +38,15 @@ public class PetStats : MonoBehaviour
         happiness += itemData.happinessEffect;
 
         ClampAllStats();
+        CheckForFailure();
+    }
+
+    private void CheckForFailure()
+    {
+        if (hunger <= 0 || cleanliness <= 0 || happiness <= 0)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
     }
 
     public void DecayStatsForNewDay()
@@ -46,9 +55,8 @@ public class PetStats : MonoBehaviour
         cleanliness -= 25f;
         happiness -= 25f;
 
-        // Make sure they don't go below zero
         ClampAllStats();
-        Debug.Log($"Stats decayed. Hunger: {hunger}, Cleanliness: {cleanliness}, Happiness: {happiness}");
+        CheckForFailure();
     }
 
     private void ClampAllStats()

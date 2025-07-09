@@ -7,15 +7,28 @@ public class TaskManager : MonoBehaviour
 {
     public static TaskManager Instance { get; private set; }
 
-    [Header("Task Data")]
-    [SerializeField] private List<TasksScriptable> allPossibleTasks;
-    private List<TasksScriptable> tasksForCurrentDay;
+    [Header("Task Data Source")]
+    [SerializeField] private List<TasksScriptable> majorTasksInOrder;
+    [SerializeField] private List<TasksScriptable> allMinorTasks;
+
+    // --- Internal State Variables (Managed by the script) ---
+    private TasksScriptable activeMajorTask;
+    public TasksScriptable ActiveMajorTask { get { return activeMajorTask; } }
+
+    private List<TasksScriptable> availableMinorTasks;
+    private List<TasksScriptable> dailyMinorTasks;
+    private List<TasksScriptable> completedChapterTasks;
+    private Dictionary<TasksScriptable, int> taskCooldowns;
+
+    // --- Progress Tracking ---
     private Dictionary<TasksScriptable, int> itemTaskProgress;
-    private Dictionary<TasksScriptable, bool> amountTaskCompleted;
+
 
     [Header("UI References")]
     [SerializeField] private GameObject taskListUIParent;
     [SerializeField] private GameObject taskUIPrefab;
+
+    [SerializeField] private PetCareUIManager uiManager;
 
     private void Awake()
     {
@@ -25,7 +38,7 @@ public class TaskManager : MonoBehaviour
 
     private void Start()
     {
-        LoadTasksForDay(1);
+        LoadChapterTasks(1);
     }
 
     private void Update()
@@ -33,123 +46,194 @@ public class TaskManager : MonoBehaviour
         CheckAmountTasks();
     }
 
-    public void LoadTasksForDay(int day)
+    public void LoadChapterTasks(int chapterNumber)
     {
-        int tasksToSkip = (day - 1) * 3;
-        tasksForCurrentDay = allPossibleTasks.Skip(tasksToSkip).Take(3).ToList();
-
-        itemTaskProgress = new Dictionary<TasksScriptable, int>();
-        amountTaskCompleted = new Dictionary<TasksScriptable, bool>();
-        foreach (var task in tasksForCurrentDay)
+        if (chapterNumber - 1 < majorTasksInOrder.Count)
         {
-            if (task.goalType == TaskGoalType.UseSpecificItem)
+            activeMajorTask = majorTasksInOrder[chapterNumber - 1];
+        }
+        else
+        {
+            Debug.LogError("Trying to load a chapter that doesn't have a Major Task assigned!");
+            return;
+        }
+
+        // The pool of available minor tasks is ALWAYS the full list.
+        availableMinorTasks = new List<TasksScriptable>(allMinorTasks);
+        dailyMinorTasks = new List<TasksScriptable>();
+        completedChapterTasks = new List<TasksScriptable>();
+        taskCooldowns = new Dictionary<TasksScriptable, int>();
+        itemTaskProgress = new Dictionary<TasksScriptable, int>();
+
+        SelectDailyTasks();
+        UpdateTaskUI();
+    }
+
+    public void PrepareForNextDay()
+    {
+        if (taskCooldowns.Count > 0)
+        {
+            var cooledDownTasks = new List<TasksScriptable>();
+            foreach (var task in taskCooldowns.Keys.ToList())
             {
-                itemTaskProgress.Add(task, 0);
+                taskCooldowns[task]--;
+                if (taskCooldowns[task] <= 0) { cooledDownTasks.Add(task); }
             }
-            else if (task.goalType == TaskGoalType.ReachAmount)
+            foreach (var task in cooledDownTasks) { taskCooldowns.Remove(task); }
+        }
+
+        dailyMinorTasks.RemoveAll(task => IsTaskComplete(task));
+
+        SelectDailyTasks();
+        UpdateTaskUI();
+    }
+
+    private void SelectDailyTasks()
+    {
+        int tasksNeeded = 2 - dailyMinorTasks.Count;
+        if (tasksNeeded <= 0) return;
+
+        var selectableTasks = availableMinorTasks.Where(t => !taskCooldowns.ContainsKey(t) && !dailyMinorTasks.Contains(t)).ToList();
+
+        for (int i = 0; i < tasksNeeded && selectableTasks.Count > 0; i++)
+        {
+            int randomIndex = Random.Range(0, selectableTasks.Count);
+            TasksScriptable newTask = selectableTasks[randomIndex];
+
+            dailyMinorTasks.Add(newTask);
+            selectableTasks.RemoveAt(randomIndex);
+
+            if (newTask.goalType == TaskGoalType.UseSpecificItem && !itemTaskProgress.ContainsKey(newTask))
             {
-                amountTaskCompleted.Add(task, false);
+                itemTaskProgress.Add(newTask, 0);
             }
         }
-        UpdateTaskUI();
     }
 
     private void CheckAmountTasks()
     {
-        if (tasksForCurrentDay == null) return;
-        bool needsUiUpdate = false;
+        if (dailyMinorTasks == null) return;
 
-        foreach (var task in tasksForCurrentDay)
+        foreach (var task in dailyMinorTasks.ToList())
         {
-            if (task.goalType == TaskGoalType.ReachAmount && !amountTaskCompleted[task])
+            if (task.goalType == TaskGoalType.ReachAmount && !IsTaskComplete(task))
             {
                 float currentStatValue = 0;
                 switch (task.taskCategory)
                 {
-                    case TaskCategories.Feed:
-                        currentStatValue = PetStats.Instance.hunger;
-                        break;
-                    case TaskCategories.Clean:
-                        currentStatValue = PetStats.Instance.cleanliness;
-                        break;
-                    case TaskCategories.Play:
-                        currentStatValue = PetStats.Instance.happiness;
-                        break;
+                    case TaskCategories.Feed: currentStatValue = PetStats.Instance.hunger; break;
+                    case TaskCategories.Clean: currentStatValue = PetStats.Instance.cleanliness; break;
+                    case TaskCategories.Play: currentStatValue = PetStats.Instance.happiness; break;
                 }
 
                 if (currentStatValue >= task.amountToReach)
                 {
-                    amountTaskCompleted[task] = true;
-                    needsUiUpdate = true;
+                    MarkTaskAsComplete(task);
+                    UpdateTaskUI();
                 }
             }
-        }
-
-        if (needsUiUpdate)
-        {
-            UpdateTaskUI();
         }
     }
 
     public void OnItemUsed(ItemData itemUsed)
     {
-        if (tasksForCurrentDay == null) return;
-        foreach (var task in tasksForCurrentDay)
+        if (dailyMinorTasks == null) return;
+
+        foreach (var task in dailyMinorTasks)
         {
-            if (task.goalType == TaskGoalType.UseSpecificItem && task.requiredItem == itemUsed)
+            if (task.goalType == TaskGoalType.UseSpecificItem && task.requiredItem == itemUsed && !IsTaskComplete(task))
             {
                 itemTaskProgress[task]++;
+                if (itemTaskProgress[task] >= task.requiredItemCount)
+                {
+                    MarkTaskAsComplete(task);
+                }
+                UpdateTaskUI();
             }
         }
-        UpdateTaskUI();
     }
 
-    public bool AreAllTasksComplete()
+    private void MarkTaskAsComplete(TasksScriptable task)
     {
-        if (tasksForCurrentDay == null || tasksForCurrentDay.Count == 0) return true;
-        foreach (var task in tasksForCurrentDay)
+        if (completedChapterTasks.Contains(task)) return;
+
+        completedChapterTasks.Add(task);
+        Debug.Log($"Task Completed: {task.description}");
+
+        if (task.taskType == TaskType.Minor)
         {
-            if (task.goalType == TaskGoalType.UseSpecificItem)
+            taskCooldowns[task] = 3;
+        }
+
+        CheckMajorTaskCompletion();
+    }
+
+    private void CheckMajorTaskCompletion()
+    {
+        if (activeMajorTask == null || IsTaskComplete(activeMajorTask)) return;
+
+        int minorTasksDone = completedChapterTasks.Count(t => t.taskType == TaskType.Minor);
+
+        if (minorTasksDone >= activeMajorTask.minorTasksRequired)
+        {
+            MarkTaskAsComplete(activeMajorTask);
+            Debug.Log($"MAJOR TASK COMPLETED: {activeMajorTask.description}");
+
+            if (uiManager != null)
             {
-                if (itemTaskProgress[task] < task.requiredItemCount) return false;
-            }
-            else if (task.goalType == TaskGoalType.ReachAmount)
-            {
-                if (!amountTaskCompleted[task]) return false;
+                uiManager.ShowMajorTaskCompletedPopup();
             }
         }
-        return true;
+    }
+
+    public bool IsTaskComplete(TasksScriptable task)
+    {
+        return completedChapterTasks.Contains(task);
     }
 
     private void UpdateTaskUI()
     {
+        // Clear old UI
         foreach (Transform child in taskListUIParent.transform) { Destroy(child.gameObject); }
-        if (tasksForCurrentDay == null) return;
 
-        foreach (var task in tasksForCurrentDay)
+        // Display Major Task
+        if (activeMajorTask != null)
+        {
+            GameObject majorTaskUI = Instantiate(taskUIPrefab, taskListUIParent.transform);
+            TextMeshProUGUI majorText = majorTaskUI.transform.Find("Description_Text").GetComponent<TextMeshProUGUI>();
+            int progress = completedChapterTasks.Count(t => t.taskType == TaskType.Minor);
+            majorText.text = $"{activeMajorTask.description} ({progress}/{activeMajorTask.minorTasksRequired})";
+            if (IsTaskComplete(activeMajorTask))
+            {
+                majorText.fontStyle = FontStyles.Strikethrough;
+                majorText.color = Color.gray;
+            }
+        }
+
+        // Display the 2 Daily Minor Tasks
+        if (dailyMinorTasks == null) return;
+        foreach (var task in dailyMinorTasks)
         {
             GameObject taskUIInstance = Instantiate(taskUIPrefab, taskListUIParent.transform);
             TextMeshProUGUI descriptionText = taskUIInstance.transform.Find("Description_Text").GetComponent<TextMeshProUGUI>();
 
-            bool isComplete = false;
             if (task.goalType == TaskGoalType.UseSpecificItem)
             {
-                int currentProgress = itemTaskProgress[task];
-                int requiredCount = task.requiredItemCount;
-                descriptionText.text = $"{task.description} ({currentProgress}/{requiredCount})";
-                if (currentProgress >= requiredCount) isComplete = true;
+                // Ensure progress data exists before trying to access it
+                int currentProgress = itemTaskProgress.ContainsKey(task) ? itemTaskProgress[task] : 0;
+                descriptionText.text = $"{task.description} ({currentProgress}/{task.requiredItemCount})";
             }
-            else if (task.goalType == TaskGoalType.ReachAmount)
+            else
             {
                 descriptionText.text = task.description;
-                if (amountTaskCompleted[task]) isComplete = true;
             }
 
-            if (isComplete)
+            if (IsTaskComplete(task))
             {
                 descriptionText.fontStyle = FontStyles.Strikethrough;
                 descriptionText.color = Color.gray;
             }
         }
     }
+
 }

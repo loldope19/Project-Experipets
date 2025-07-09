@@ -1,9 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class DesktopUIManager : MonoBehaviour
 {
     [Header("UI Panels")]
     [SerializeField] private GameObject startMenuPanel;
+
+    [Header("Transition Effects")]
+    [SerializeField] private Animator fadePanelAnimator;
 
     public void ToggleStartMenu()
     {
@@ -20,7 +24,40 @@ public class DesktopUIManager : MonoBehaviour
     public void OnLogOutClicked()
     {
         Debug.Log("Logging out...");
-        ViewManager.Instance.GoToLoginView();
         ToggleStartMenu();
+        ViewManager.Instance.GoToLoginView();
+    }
+
+    public void OnShutDownButtonClicked()
+    {
+        StartCoroutine(ShutdownSequence());
+    }
+
+    private IEnumerator ShutdownSequence()
+    {
+        if (startMenuPanel.activeSelf)
+        {
+            ToggleStartMenu();
+        }
+
+        fadePanelAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(2f);
+
+        bool wasMajorTaskCompleted = TaskManager.Instance.IsTaskComplete(TaskManager.Instance.ActiveMajorTask);
+        DayManager.Instance.EndDayAndDecayStats();
+
+        if (wasMajorTaskCompleted)
+        {
+            DayManager.Instance.AdvanceToNextChapter();
+        }
+        else
+        {
+            TaskManager.Instance.PrepareForNextDay();
+        }
+
+        ViewManager.Instance.GoToLoginView();
+
+        fadePanelAnimator.SetTrigger("FadeOut");
     }
 }

@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Veggies_Item
   m_EditorClassIdentifier: 
   itemName: Veggies
-  itemIcon: {fileID: 21300000, guid: 6038ba1702b10db488448c09af76b994, type: 3}
+  itemIcon: {fileID: 21300000, guid: 5aa5bad317d43104dbb684197ca8fa80, type: 3}
   cost: 20
   description: A carefully selected mix of fresh, crunchy vegetables. The perfect
     choice for a healthy, balanced diet and maintaining peak wellness. By which we
     mean broccoli.
+  category: 0
   hungerEffect: 25
-  cleanlinessEffect: 0
+  cleanlinessEffect: 5
   happinessEffect: 5

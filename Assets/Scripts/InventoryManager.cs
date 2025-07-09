@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -7,14 +7,13 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
 
+    public static event Action OnInventoryChanged;
+
     [Header("-- References --")]
     [SerializeField] private PetStats petStats;
 
     [Header("-- Inventory --")]
     public List<InventorySlot> inventorySlots = new List<InventorySlot>();
-
-    [Header("-- Task Logic Manager --")]
-    public TaskManager task;
 
     private void Awake()
     {
@@ -27,6 +26,7 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
         }
     }
+
 
     public void AddItem(ItemData item)
     {
@@ -42,7 +42,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         Debug.Log($"Added 1 {item.itemName}. We now have {slot?.quantity ?? 1}.");
-        // call a function here to refresh the inventory UI
+        OnInventoryChanged?.Invoke();
     }
 
     public void UseItem(ItemData item)
@@ -51,23 +51,15 @@ public class InventoryManager : MonoBehaviour
 
         if (slot != null)
         {
-            if (petStats != null)
+            slot.quantity--;
+
+            if (slot.quantity <= 0)
             {
-                TaskManager.Instance.OnItemUsed(item);
-                petStats.ApplyItemEffects(item);
-                slot.quantity--;
-
-                if (slot.quantity <= 0)
-                {
-                    inventorySlots.Remove(slot);
-                }
-
-                if (item.category == ItemCategory.Food) PetAnimationManager.Instance.Eat();
-                if (item.category == ItemCategory.Toy) PetAnimationManager.Instance.Play();
-
-                Debug.Log($"Used {item.itemName}. {slot.quantity} remaining.");
-                // refresh the inventory UI here
+                inventorySlots.Remove(slot);
             }
+
+            Debug.Log($"Used {item.itemName}. {slot.quantity} remaining.");
+            OnInventoryChanged?.Invoke();
         }
     }
 }

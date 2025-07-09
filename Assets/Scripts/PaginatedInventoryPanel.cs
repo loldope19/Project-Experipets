@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +19,12 @@ public class PaginatedInventoryPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        // Optional: Add listeners for when the main inventory changes, to auto-refresh
+        InventoryManager.OnInventoryChanged += RefreshDisplay;
+    }
+
+    private void OnDisable()
+    {
+        InventoryManager.OnInventoryChanged -= RefreshDisplay;
     }
 
     public void Show(ItemCategory categoryToShow)
@@ -29,12 +33,7 @@ public class PaginatedInventoryPanel : MonoBehaviour
         currentPage = 0;
         currentCategory = categoryToShow;
 
-        filteredItems = InventoryManager.Instance.inventorySlots
-                        .Where(slot => slot.item.category == categoryToShow)
-                        .ToList();
-        Debug.Log($"Found {filteredItems.Count} items in the '{categoryToShow}' category.");
-
-        RefreshDisplay();   
+        RefreshDisplay();
     }
 
     public void Hide()
@@ -68,6 +67,10 @@ public class PaginatedInventoryPanel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        filteredItems = InventoryManager.Instance.inventorySlots
+                                      .Where(slot => slot.item.category == currentCategory)
+                                      .ToList();
+
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Mathf.Min(startIndex + itemsPerPage, filteredItems.Count);
 
@@ -76,20 +79,22 @@ public class PaginatedInventoryPanel : MonoBehaviour
             InventorySlot inventorySlot = filteredItems[i];
             GameObject slotInstance = Instantiate(inventorySlotPrefab, slotContainer);
 
-            Image itemIcon = slotInstance.transform.Find("ItemIcon").GetComponent<Image>();
+            InventorySlotUI slotUI = slotInstance.GetComponent<InventorySlotUI>();
+            if (slotUI != null)
+            {
+                slotUI.SetSlot(inventorySlot);
+            }
+
             TMPro.TextMeshProUGUI quantityText = slotInstance.transform.Find("QuantityText").GetComponent<TMPro.TextMeshProUGUI>();
-            Button useButton = slotInstance.transform.Find("UseButton").GetComponent<Button>();
-
-            itemIcon.sprite = inventorySlot.item.itemIcon;
-            quantityText.text = $"x{inventorySlot.quantity}";
-
-            ItemData currentItem = inventorySlot.item;
-
-            Debug.Log(itemIcon.sprite.name + ": " + quantityText.text);
-            useButton.onClick.AddListener(() => {
-                InventoryManager.Instance.UseItem(currentItem);
-                Show(currentCategory);
-            });
+            if (inventorySlot.item.category == ItemCategory.Food)
+            {
+                quantityText.gameObject.SetActive(true);
+                quantityText.text = $"x{inventorySlot.quantity}";
+            }
+            else
+            {
+                quantityText.gameObject.SetActive(false);
+            }
         }
 
         if (leftArrowButton) leftArrowButton.interactable = (currentPage > 0);

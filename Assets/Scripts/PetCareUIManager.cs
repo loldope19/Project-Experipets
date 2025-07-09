@@ -10,6 +10,9 @@ public class PetCareUIManager : MonoBehaviour
     [SerializeField] private GameObject decorateSubMenu;
     // Add other sub-menus here as you build them
 
+    [Header("Notification Panels")]
+    [SerializeField] private GameObject majorTaskCompletedPopup;
+
     [Header("Specialized Inventory Panels")]
     [SerializeField] private PaginatedInventoryPanel foodInventoryPanel;
     [SerializeField] private PaginatedInventoryPanel cleanInventoryPanel;
@@ -21,10 +24,12 @@ public class PetCareUIManager : MonoBehaviour
     [SerializeField] private Slider cleanlinessSlider;
     [SerializeField] private Slider happinessSlider;
 
+
     private void Start()
     {
         HideAllSubMenus();
-        DialogueManager.Instance.StartDialogue("CoreFive", 0);
+        HideMajorTaskCompletedPopup();
+        // DialogueManager.Instance.StartDialogue("CoreFive", 0);
     }
 
     private void Update()
@@ -35,6 +40,23 @@ public class PetCareUIManager : MonoBehaviour
             cleanlinessSlider.value = PetStats.Instance.cleanliness;
             happinessSlider.value = PetStats.Instance.happiness;
         }
+    }
+
+    private void OnEnable()
+    {
+        if (foodInventoryPanel.gameObject.activeSelf)
+        {
+            foodInventoryPanel.Show(ItemCategory.Food);
+        }
+        else if (cleanInventoryPanel.gameObject.activeSelf)
+        {
+            cleanInventoryPanel.Show(ItemCategory.Cleaning);
+        }
+        else if (playInventoryPanel.gameObject.activeSelf)
+        {
+            playInventoryPanel.Show(ItemCategory.Toy);
+        }
+        HideAllPanels();
     }
 
     private void HideAllSubMenus()
@@ -65,14 +87,22 @@ public class PetCareUIManager : MonoBehaviour
     {
         HideAllSubMenus();
         if (cleanSubMenu.activeSelf) cleanSubMenu.SetActive(false);
-        else cleanSubMenu.SetActive(true);
+        else
+        {
+            cleanSubMenu.SetActive(true);
+            cleanInventoryPanel.Show(ItemCategory.Cleaning);
+        }
     }
 
     public void OnPlayCategoryClicked()
     {
         HideAllSubMenus();
         if (playSubMenu.activeSelf) playSubMenu.SetActive(false);
-        else playSubMenu.SetActive(true);
+        else
+        {
+            playSubMenu.SetActive(true);
+            playInventoryPanel.Show(ItemCategory.Toy);
+        }
     }
 
     public void OnDecorateCategoryClicked()
@@ -82,6 +112,23 @@ public class PetCareUIManager : MonoBehaviour
         else decorateSubMenu.SetActive(true);
     }
 
+    // --- Functions for Pop-ups ---
+    public void ShowMajorTaskCompletedPopup()
+    {
+        if (majorTaskCompletedPopup != null)
+        {
+            majorTaskCompletedPopup.SetActive(true);
+        }
+    }
+
+    public void HideMajorTaskCompletedPopup()
+    {
+        if (majorTaskCompletedPopup != null)
+        {
+            majorTaskCompletedPopup.SetActive(false);
+        }
+    }   
+
     // --- Functions for Sub-Menu Buttons ---
     public void OnMealButtonClicked()
     {
@@ -89,21 +136,16 @@ public class PetCareUIManager : MonoBehaviour
         foodInventoryPanel.Show(ItemCategory.Food);
     }
 
-    public void OnWallButtonClicked()
+    public void OnMedicineButtonClicked()
     {
         HideAllPanels();
-        decorateInventoryPanel.Show(ItemCategory.Wall);
+        foodInventoryPanel.Show(ItemCategory.Medicine);
     }
 
-    public void OnFloorButtonClicked()
+    public void OnTreatButtonClicked()
     {
         HideAllPanels();
-        decorateInventoryPanel.Show(ItemCategory.Floor);
+        foodInventoryPanel.Show(ItemCategory.Treat);
     }
 
-    public void OnFurnitureButtonClicked()
-    {
-        HideAllPanels();
-        decorateInventoryPanel.Show(ItemCategory.Furniture);
-    }
 }

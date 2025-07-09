@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Laser_Item
   m_EditorClassIdentifier: 
   itemName: Laser Pointer
-  itemIcon: {fileID: 21300000, guid: a4567e7ba5d38dd4c82178ab52c5964a, type: 3}
+  itemIcon: {fileID: 21300000, guid: 7313f7f3ea8760f4ea15efa1f5d8040e, type: 3}
   cost: 40
   description: A standard-issue, low-intensity laser emitter. Perfect for stimulating
     an experiment's natural predatory and tracking instincts in a safe, controlled
     manner.
-  category: 1
+  category: 3
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 50

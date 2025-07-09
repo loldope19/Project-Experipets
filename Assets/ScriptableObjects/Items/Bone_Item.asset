@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Bone_Item
   m_EditorClassIdentifier: 
   itemName: Chewable Bone
-  itemIcon: {fileID: 21300000, guid: 4d5247f4cf0238046a90c926f6332919, type: 3}
+  itemIcon: {fileID: 21300000, guid: 57ce95dabfb23134bb158c1120d1fcd5, type: 3}
   cost: 35
   description: A durable, synthetic bone designed for prolonged gnawing. Promotes
     dental health and serves as a fantastic stress-reliever for anxious creatures.
-  category: 1
+  category: 3
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 40

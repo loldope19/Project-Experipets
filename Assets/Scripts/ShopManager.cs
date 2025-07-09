@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
 
     private void Update()
     {
-        moneyText.text = $"Money: {currencyManager.currentBalance}G";
+        moneyText.text = currencyManager.currentBalance.ToString();
     }
 
     private void GenerateShopItems()
@@ -33,9 +33,6 @@ public class ShopManager : MonoBehaviour
         {
             GameObject slotInstance = Instantiate(shopItemSlotPrefab, shopPanel.transform);
 
-            // --- Find the UI elements within the instantiated prefab ---
-            // Note: You might need to adjust these paths based on your prefab's hierarchy.
-            // e.g., slotInstance.transform.Find("ItemIcon").GetComponent<Image>();
             Image itemIcon = slotInstance.transform.Find("ItemIcon").GetComponent<Image>();
             TextMeshProUGUI itemNameText = slotInstance.transform.Find("ItemNameText").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI itemCostText = slotInstance.transform.Find("ItemCostText").GetComponent<TextMeshProUGUI>();

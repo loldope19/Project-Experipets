@@ -8,6 +8,7 @@ public class DayManager : MonoBehaviour
 
     [Header("Day Management")]
     [SerializeField] private int currentDay = 1;
+    [SerializeField] private int currentChapter = 1;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI dayCounterText;
@@ -24,22 +25,15 @@ public class DayManager : MonoBehaviour
         UpdateDayUI();
     }
 
-    private void Update()
-    {
-        if (TaskManager.Instance != null && endDayButton != null)
-        {
-            endDayButton.interactable = TaskManager.Instance.AreAllTasksComplete();
-        }
-    }
-
-    public void AdvanceToNextDay()
+    public void EndDayAndDecayStats()
     {
         currentDay++;
         UpdateDayUI();
 
-        PetStats.Instance.DecayStatsForNewDay();
-
-        TaskManager.Instance.LoadTasksForDay(currentDay);
+        if (PetStats.Instance != null)
+        {
+            PetStats.Instance.DecayStatsForNewDay();
+        }
 
         Debug.Log($"Advanced to Day {currentDay}. Stats have decayed.");
     }
@@ -49,6 +43,16 @@ public class DayManager : MonoBehaviour
         if (dayCounterText != null)
         {
             dayCounterText.text = $"Day {currentDay:D3}";
+        }
+    }
+
+    public void AdvanceToNextChapter()
+    {
+        currentChapter++;
+        Debug.Log($"Advancing to Chapter {currentChapter}");
+        if (TaskManager.Instance != null)
+        {
+            TaskManager.Instance.LoadChapterTasks(currentChapter);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour
@@ -8,6 +9,7 @@ public class CurrencyManager : MonoBehaviour
 
     [Header("-- Currency --")]
     public int currentBalance = 200;
+    public TextMeshProUGUI balanceText;
 
     private void Awake()
     {
@@ -19,6 +21,14 @@ public class CurrencyManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // not sure if i do want it to persist between scenes.
+        }
+    }
+
+    private void Update()
+    {
+        if (balanceText.isActiveAndEnabled)
+        {
+            balanceText.text = currentBalance.ToString();
         }
     }
 

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ball_item
   m_EditorClassIdentifier: 
   itemName: Ball
-  itemIcon: {fileID: 21300000, guid: 9c46340445c5629439524eefd11f6fe8, type: 3}
+  itemIcon: {fileID: 21300000, guid: 89f0fdfd2133ab9439e9187039144f36, type: 3}
   cost: 20
   description: A classic rubber ball. Its high-bounce formula is calibrated to provide
     hours of physical and mental enrichment through simple play.
-  category: 1
+  category: 3
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 30
