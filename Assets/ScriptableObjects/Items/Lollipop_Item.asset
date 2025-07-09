@@ -18,6 +18,6 @@ MonoBehaviour:
   description: A simple, sugary treat. Not very nutritious, but a guaranteed way
     to bring a little sweetness into any experiment's day.
   category: 2
-  hungerEffect: 10
+  hungerEffect: 5
   cleanlinessEffect: 0
   happinessEffect: 2

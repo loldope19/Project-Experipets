@@ -86,7 +86,9 @@ public class PaginatedInventoryPanel : MonoBehaviour
             }
 
             TMPro.TextMeshProUGUI quantityText = slotInstance.transform.Find("QuantityText").GetComponent<TMPro.TextMeshProUGUI>();
-            if (inventorySlot.item.category == ItemCategory.Food)
+            if (inventorySlot.item.category == ItemCategory.Food ||
+                inventorySlot.item.category == ItemCategory.Medicine ||
+                inventorySlot.item.category == ItemCategory.Treat)
             {
                 quantityText.gameObject.SetActive(true);
                 quantityText.text = $"x{inventorySlot.quantity}";

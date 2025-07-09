@@ -57,6 +57,20 @@ public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, 
                 }
             }
         }
+
+        if (currentItem.category == ItemCategory.Toy)
+        {
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            foreach (RaycastResult result in results)
+            {
+                if (result.gameObject.TryGetComponent<PetRubTarget>(out PetRubTarget pet))
+                {
+                    pet.ApplyMood();
+                }
+            }
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
