@@ -22,6 +22,27 @@ public class PetAnimationManager : MonoBehaviour
         else { Instance = this; }
     }
 
+    public void StageChange()
+    {
+        Stage++;
+        switch (Stage)
+        {
+            case 1:
+                animator.runtimeAnimatorController = Stage_1;
+                break;
+            case 2:
+                animator.runtimeAnimatorController = Stage_2;
+                break;
+            case 3:
+                animator.runtimeAnimatorController = Stage_3;
+                break;
+            default:
+                animator.runtimeAnimatorController = Stage_1;
+                Stage = 1;
+                break;
+        }
+    }
+
     public void StageChange(int stageNum)
     {
         Stage = stageNum;
@@ -35,6 +56,10 @@ public class PetAnimationManager : MonoBehaviour
                 break;
             case 3:
                 animator.runtimeAnimatorController = Stage_3;
+                break;
+            default:
+                animator.runtimeAnimatorController = Stage_1;
+                Stage = 1;
                 break;
         }
     }

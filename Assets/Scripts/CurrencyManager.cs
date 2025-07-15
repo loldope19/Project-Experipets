@@ -11,6 +11,9 @@ public class CurrencyManager : MonoBehaviour
     public int currentBalance = 200;
     public TextMeshProUGUI balanceText;
 
+    [SerializeField] private int minorTaskReward = 25;
+    [SerializeField] private int majorTaskReward = 50;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -39,6 +42,14 @@ public class CurrencyManager : MonoBehaviour
 
     public void AddCurrency(int amount)
     {
+        currentBalance += amount;
+        Debug.Log($"Added {amount} currency. New balance: {currentBalance}");
+        // update UI here afterwards
+    }
+
+    public void AddCurrency(int minorTasksCompleted, int majorTasksCompleted)
+    {
+        int amount = minorTasksCompleted * minorTaskReward + majorTasksCompleted * majorTaskReward;
         currentBalance += amount;
         Debug.Log($"Added {amount} currency. New balance: {currentBalance}");
         // update UI here afterwards

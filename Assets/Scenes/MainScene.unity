@@ -2567,6 +2567,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2d2615eeee0f39458d5904c23ccd56d, type: 2}
   - {fileID: 11400000, guid: 4a359131116ee304086a153ea93b8172, type: 2}
   - {fileID: 11400000, guid: d75e4570c17815d4b9521dcece409e65, type: 2}
+  - {fileID: 11400000, guid: 543d42d55cce7104c8d0256d5e820b28, type: 2}
   currencyManager: {fileID: 276117429}
   moneyText: {fileID: 1220304110}
   shopPanel: {fileID: 228214193}
@@ -5725,6 +5726,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f809c4f08c43b0e4a96fd68c532403e1, type: 2}
   - {fileID: 11400000, guid: c02eac64564f4ca48a1e3459e476ffb5, type: 2}
   - {fileID: 11400000, guid: d2d0fcefd7a3d484ea85dda6c8e068f7, type: 2}
+  tasksCompletionReward: 0
   taskListUIParent: {fileID: 1636589320}
   taskUIPrefab: {fileID: 3238255422745733021, guid: 7b28628a5c9a9df44b213e3282f0c376, type: 3}
   uiManager: {fileID: 865261899}

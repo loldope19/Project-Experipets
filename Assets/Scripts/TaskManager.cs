@@ -22,7 +22,8 @@ public class TaskManager : MonoBehaviour
 
     // --- Progress Tracking ---
     private Dictionary<TasksScriptable, int> itemTaskProgress;
-
+    public int minorTasksCompleted = 0;
+    public int majorTasksCompleted = 0;
 
     [Header("UI References")]
     [SerializeField] private GameObject taskListUIParent;
@@ -81,6 +82,9 @@ public class TaskManager : MonoBehaviour
             }
             foreach (var task in cooledDownTasks) { taskCooldowns.Remove(task); }
         }
+
+        minorTasksCompleted = 0;
+        majorTasksCompleted = 0;
 
         dailyMinorTasks.RemoveAll(task => IsTaskComplete(task));
 
@@ -157,7 +161,10 @@ public class TaskManager : MonoBehaviour
     {
         if (completedChapterTasks.Contains(task)) return;
 
-        completedChapterTasks.Add(task);
+        if(task.taskType == TaskType.Minor) minorTasksCompleted++;
+        else if (task.taskType == TaskType.Major) majorTasksCompleted++;
+
+            completedChapterTasks.Add(task);
         Debug.Log($"Task Completed: {task.description}");
 
         if (task.taskType == TaskType.Minor)

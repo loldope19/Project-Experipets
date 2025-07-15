@@ -47,9 +47,12 @@ public class DesktopUIManager : MonoBehaviour
         bool wasMajorTaskCompleted = TaskManager.Instance.IsTaskComplete(TaskManager.Instance.ActiveMajorTask);
         DayManager.Instance.EndDayAndDecayStats();
 
+        CurrencyManager.Instance.AddCurrency(TaskManager.Instance.minorTasksCompleted, TaskManager.Instance.majorTasksCompleted);
+
         if (wasMajorTaskCompleted)
         {
             DayManager.Instance.AdvanceToNextChapter();
+            PetAnimationManager.Instance.StageChange();
         }
         else
         {
