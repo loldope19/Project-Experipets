@@ -12,5 +12,6 @@ public class InventorySlotUI : MonoBehaviour
         slot = newSlot;
         itemIcon.sprite = newSlot.item.itemIcon;
         itemIcon.enabled = true;
+        GetComponent<InteractableItem>().Initialize(slot.item);
     }
 }

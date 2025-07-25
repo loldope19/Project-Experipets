@@ -59,12 +59,22 @@ public class PetCareUIManager : MonoBehaviour
         HideAllPanels();
     }
 
+    private void OnDisable()
+    {
+        if (ToolModeController.Instance != null)
+        {
+            ToolModeController.Instance.SetToolMode(ToolType.None);
+            Debug.Log("PetCareView disabled, resetting tool mode via Singleton.");
+        }
+    }
+
     private void HideAllSubMenus()
     {
         feedSubMenu.SetActive(false);
         cleanSubMenu.SetActive(false);
         playSubMenu.SetActive(false);
         decorateSubMenu.SetActive(false);
+        ToolModeController.Instance.SetToolMode(ToolType.None);
     }
 
     private void HideAllPanels()

@@ -12,17 +12,17 @@ public class ImageAnimator : MonoBehaviour
     public void OnEnable()
     {
         animsManager = PetAnimationManager.Instance;
-        animsManager.AnimationOn();
+        if (animsManager != null ) animsManager.AnimationOn();
     }
 
     public void OnDisable()
     {
-        animsManager.AnimationOff();
+        if (animsManager != null) animsManager.AnimationOff();
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_Image.sprite = animsManager.GetSprite();
+        if (animsManager != null) m_Image.sprite = animsManager.GetSprite();
     }
 }

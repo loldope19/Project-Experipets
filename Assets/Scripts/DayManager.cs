@@ -10,9 +10,13 @@ public class DayManager : MonoBehaviour
     [SerializeField] private int currentDay = 1;
     [SerializeField] private int currentChapter = 1;
 
+    [Header("Mess Spawning")]
+    public static int messCount = 0;
+    public GameObject poopPrefab;
+    public SpawnArea spawnArea;
+
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI dayCounterText;
-    [SerializeField] private Button endDayButton;
 
     private void Awake()
     {
@@ -32,8 +36,10 @@ public class DayManager : MonoBehaviour
 
         if (PetStats.Instance != null)
         {
-            PetStats.Instance.DecayStatsForNewDay();
+            PetStats.Instance.DecayStatsForNewDay(messCount);
         }
+
+        SpawnPoop();
 
         Debug.Log($"Advanced to Day {currentDay}. Stats have decayed.");
     }
@@ -53,6 +59,17 @@ public class DayManager : MonoBehaviour
         if (TaskManager.Instance != null)
         {
             TaskManager.Instance.LoadChapterTasks(currentChapter);
+        }
+    }
+
+    private void SpawnPoop()
+    {
+        if (poopPrefab != null && spawnArea != null)
+        {
+            Vector2 spawnPosition = spawnArea.GetRandomPosition();
+            GameObject newPoop = Instantiate(poopPrefab, spawnArea.transform);
+            newPoop.GetComponent<RectTransform>().localPosition = spawnPosition;
+            Debug.Log("Poop spawned at local position: " + spawnPosition);
         }
     }
 }

@@ -19,10 +19,12 @@ The game also features a unique visual style where the pet and its interface are
 * **Advanced Pet Care System:**
     * A virtual pet with Hunger, Cleanliness, and Happiness stats.
     * **Feed Interaction:** A fully functional drag-and-drop system for feeding items to the pet.
-    * **Clean Interaction:** A "drag-and-rub" system for cleaning the pet with specific items.
-* **Complete Game Loop:**
-    * A "Game Over" state is triggered when any stat reaches zero.
-    * Features a complete game over sequence, including UI feedback and a scene reset that returns the player to the login screen.
+    * **Clean Interaction:** A refined drag-and-drop system where different tools have unique functions (e.g., a towel for the pet, a broom for floor dust, gloves for accidents).
+    * **Play Interaction:** Unique mechanics for different toys, including drag-and-drop chew toys, a "click-to-throw" bouncing ball, and a continuous-play laser pointer.
+* **Dynamic Environment & Gameplay Loop:**
+    * A "Game Over" state is triggered when any stat reaches zero at the end of the day.
+    * The environment dynamically becomes messy: trash appears after eating and poop appears daily.
+    * The amount of mess directly impacts the pet's well-being by amplifying the end-of-day cleanliness decay, making cleanup a strategic necessity.
 * **Dynamic Task System:**
     * A robust `TaskManager` that daily minor tasks and one major task per chapter.
     * Chapter progression is now tied to completing major tasks, not the day number.
@@ -54,10 +56,11 @@ To get a local copy up and running, follow these simple steps.
 
 1. From the Login Screen, click "Log In" to access the main Desktop.
 2. Click the "Care" icon to open the Pet Care application.
-3. Monitor the pet's needs and the daily Task List.
-4. Use the main toolbar (Feed, Clean, Play) to open sub-menus and then the contextual inventory to use items and complete tasks.
-5. Click the "Shop" button to buy more items as needed.
-6. "Shut Down" button within the Desktop progresses the day, but pet stats will decay.
+3. Monitor the pet's needs and the daily Task List. You can switch between these panels using the arrow buttons.
+4. Use the main toolbar (Feed, Clean, Play) to access your inventory.
+5. Interact with items: drag cleaning tools and chew toys, but click the Ball or Laser Pointer to activate their unique modes.
+6. Click the "Shop" button to buy more items as needed.
+7. "Shut Down" button within the Desktop progresses the day, but pet stats will decay.
 
 ## 🗺️ Roadmap (Future Plans for v0.5 & Beyond)
 
@@ -66,14 +69,15 @@ This is a very early prototype. Future development will focus on expanding the c
 * **[X] Currency & Shop Systems:** *Implemented.*
 * **[X] Day & Stat Systems:** *Implemented.*
 * **[X] Task/To-Do System:** *Implemented.*
-* **[\*] Advanced Interactions:**
-    *[X] Implement drag-and-drop item usage.
-    *[\*] Different cleaning actions.
-    *[ ] Simple mini-games for the "Play" interaction.
+* **[X] Advanced Interactions:**
+    * [X] Implement drag-and-drop item usage.
+    * [X] Different cleaning actions.
+    * [X] Unique mechanics for different toys (click-to-throw, aim-and-play, drag-and-drop).
 * **[ ] Photography & Documentation Loop:** Implement the pop-ups and camera sequence that replaces the simple "End Day" button.
 * **[ ] Dialogue System Integration:** Connect the existing dialogue mechanic to story triggers and events.
 * **[ ] Save/Load System:** Persist all game state (day, stats, inventory, currency, task progress) between sessions.
-    * Implement offline progression (needs continue to change while the game is closed).
+    * [ ]Implement offline progression (needs continue to change while the game is closed).
+    * [ ] Implement pet movement in response to events (e.g., chasing a thrown ball).
 * **[ ] Pet Animations & Feedback:** Add animations for idle, eating, reacting, etc.
 * **[ ] Sound Effects & Music.**
 

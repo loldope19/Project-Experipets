@@ -18,6 +18,7 @@ MonoBehaviour:
   description: A durable, synthetic bone designed for prolonged gnawing. Promotes
     dental health and serves as a fantastic stress-reliever for anxious creatures.
   category: 3
+  toolType: 4
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 40

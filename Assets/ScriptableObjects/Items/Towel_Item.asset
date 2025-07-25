@@ -17,6 +17,7 @@ MonoBehaviour:
   cost: 0
   description: Towel
   category: 4
+  toolType: 1
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 0

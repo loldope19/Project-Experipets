@@ -49,11 +49,15 @@ public class PetStats : MonoBehaviour
         }
     }
 
-    public void DecayStatsForNewDay()
+    public void DecayStatsForNewDay(int messCount)
     {
         hunger -= 25f;
-        cleanliness -= 25f;
         happiness -= 25f;
+        float cleanlinessPenalty = 25f + (messCount * 5f); // 5 points per piece of trash/poopies
+        cleanliness -= cleanlinessPenalty;
+
+        Debug.Log($"Day ended with {messCount} mess items. Cleanliness penalty: {cleanlinessPenalty}");
+
 
         ClampAllStats();
         CheckForFailure();

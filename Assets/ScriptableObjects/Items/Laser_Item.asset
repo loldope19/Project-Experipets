@@ -19,6 +19,7 @@ MonoBehaviour:
     an experiment's natural predatory and tracking instincts in a safe, controlled
     manner.
   category: 3
+  toolType: 6
   hungerEffect: 0
   cleanlinessEffect: 0
   happinessEffect: 50

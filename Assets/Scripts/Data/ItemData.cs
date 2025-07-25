@@ -4,6 +4,17 @@ using UnityEngine;
 
 public enum ItemCategory { Food, Medicine, Treat, Toy, Cleaning }
 
+public enum ToolType
+{
+    None,           // Not a tool
+    Towel,          // Cleans the pet
+    Broom,          // Cleans the environment
+    Gloves,         // Cleans shit lmao
+    DraggableToy,   // BONE
+    Ball,           // ball
+    LaserPointer    // The laser pointer
+}
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Experipets/Item Data")]
 public class ItemData : ScriptableObject
 {
@@ -15,6 +26,7 @@ public class ItemData : ScriptableObject
 
     [Header("-- Item Category --")]
     public ItemCategory category;
+    public ToolType toolType;
 
     [Header("-- Item Effects --")]
     public float hungerEffect;

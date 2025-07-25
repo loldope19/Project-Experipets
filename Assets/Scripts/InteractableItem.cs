@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -21,9 +21,17 @@ public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         rootCanvas = GetComponentInParent<Canvas>();
     }
 
-    private void OnEnable()
+    public void Initialize(ItemData itemToDisplay)
     {
-        currentItem = GetComponent<InventorySlotUI>().slot.item;
+        currentItem = itemToDisplay;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (currentItem.toolType == ToolType.Ball || currentItem.toolType == ToolType.LaserPointer)
+        {
+            ToolModeController.Instance.SetToolMode(currentItem.toolType);
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -44,31 +52,34 @@ public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         );
         rectTransform.localPosition = localPoint;
 
-        if (currentItem.category == ItemCategory.Cleaning)
+        List<RaycastResult> results = new();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
         {
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
-
-            foreach (RaycastResult result in results)
+            // Check the specific tool type to determine the interaction
+            switch (currentItem.toolType)
             {
-                if (result.gameObject.TryGetComponent<PetRubTarget>(out PetRubTarget pet))
-                {
-                    pet.ApplyCleaning();
-                }
-            }
-        }
+                case ToolType.Towel:
+                    if (result.gameObject.TryGetComponent<PetRubTarget>(out PetRubTarget pet))
+                    {
+                        pet.ApplyCleaning();
+                    }
+                    break;
 
-        if (currentItem.category == ItemCategory.Toy)
-        {
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
+                case ToolType.Broom:
+                    if (result.gameObject.TryGetComponent<EnvironmentTarget>(out EnvironmentTarget broomTarget))
+                    {
+                        if (broomTarget.dirtType == DirtType.Dust) { broomTarget.Clean(); }
+                    }
+                    break;
 
-            foreach (RaycastResult result in results)
-            {
-                if (result.gameObject.TryGetComponent<PetRubTarget>(out PetRubTarget pet))
-                {
-                    pet.ApplyMood();
-                }
+                case ToolType.Gloves:
+                    if (result.gameObject.TryGetComponent<EnvironmentTarget>(out EnvironmentTarget gloveTarget))
+                    {
+                        if (gloveTarget.dirtType == DirtType.Poop) { gloveTarget.Clean(); }
+                    }
+                    break;
             }
         }
     }
@@ -83,4 +94,5 @@ public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         rectTransform.anchoredPosition = originalPosition;
         canvasGroup.blocksRaycasts = true;
     }
+
 }
