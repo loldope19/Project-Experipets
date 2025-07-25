@@ -11,7 +11,7 @@ The game also features a unique visual style where the pet and its interface are
 ![alt-text](https://github.com/loldope19/Project-Experipets/blob/main/image_2025-07-01_223721624.png "Experipets Sample")
 
 
-### Current Features (Prototype v0.4)
+### Current Features (Prototype v0.5)
 
 * **OS-Style UI Navigation:**
     * A complete, single-scene UI managed by a `ViewManager`.
@@ -62,7 +62,7 @@ To get a local copy up and running, follow these simple steps.
 6. Click the "Shop" button to buy more items as needed.
 7. "Shut Down" button within the Desktop progresses the day, but pet stats will decay.
 
-## 🗺️ Roadmap (Future Plans for v0.5 & Beyond)
+## 🗺️ Roadmap (Future Plans for v0.6 & Beyond)
 
 This is a very early prototype. Future development will focus on expanding the core loop and adding more depth:
 
