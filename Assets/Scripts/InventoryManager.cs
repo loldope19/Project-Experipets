@@ -58,15 +58,6 @@ public class InventoryManager : MonoBehaviour
                 inventorySlots.Remove(slot);
             }
 
-            switch (item.category)
-            {
-                case ItemCategory.Food:
-                case ItemCategory.Treat:
-                case ItemCategory.Medicine:
-                    PetAnimationManager.Instance.Eat();
-                    break;
-            }
-
             Debug.Log($"Used {item.itemName}. {slot.quantity} remaining.");
             OnInventoryChanged?.Invoke();
         }

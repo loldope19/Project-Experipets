@@ -72,19 +72,31 @@ public class PetAnimationManager : MonoBehaviour
     public void Eat()
     {
         animator.Play("Eat");
-        Invoke(nameof(Idle), animLength);
+        //Invoke(nameof(Idle), animLength);
     }
 
     public void Rest()
     {
         animator.Play("Rest");
-        Invoke(nameof(Idle), animLength);
+        //Invoke(nameof(Idle), animLength);
     }
 
-    public void Play()
+    public void Ball()
     {
-        animator.Play("Play");
-        Invoke(nameof(Idle), animLength);
+        animator.Play("Ball");
+        //Invoke(nameof(Idle), animLength);
+    }
+
+    public void Bone()
+    {
+        animator.Play("Bone");
+        //Invoke(nameof(Idle), animLength);
+    }
+
+    public void Laser()
+    {
+        animator.Play("Laser");
+        //Invoke(nameof(Idle), animLength);
     }
 
     public Sprite GetSprite()

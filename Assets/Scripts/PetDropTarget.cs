@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
 public class PetDropTarget : MonoBehaviour, IDropHandler
 {
@@ -29,12 +30,27 @@ public class PetDropTarget : MonoBehaviour, IDropHandler
             TaskManager.Instance.OnItemUsed(droppedItem);
             InventoryManager.Instance.UseItem(droppedItem);
 
+            PetAnimationManager.Instance.Eat();
+
             Destroy(droppedObject);
             SpawnTrash();
         }
         else if (droppedItem.category == ItemCategory.Toy)
         {
             Debug.Log($"Played with {droppedItem.name}!");
+
+            switch (droppedItem.toolType)
+            {
+                case ToolType.Ball:
+                    PetAnimationManager.Instance.Ball();
+                    break;
+                case ToolType.DraggableToy:
+                    PetAnimationManager.Instance.Bone();
+                    break;
+                case ToolType.LaserPointer:
+                    PetAnimationManager.Instance.Laser();
+                    break;
+            }
 
             PetStats.Instance.Play(droppedItem.happinessEffect);
             TaskManager.Instance.OnItemUsed(droppedItem);
