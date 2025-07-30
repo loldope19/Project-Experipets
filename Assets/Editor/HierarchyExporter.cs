@@ -15,7 +15,7 @@ public class HierarchyExporter
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendLine("--- SELECTED HIERARCHY EXPORT ---");
         PrintObjectHierarchy(selectedObject.transform, sb, "");
         Debug.Log(sb.ToString());
@@ -31,7 +31,7 @@ public class HierarchyExporter
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendLine($"--- SCENE HIERARCHY EXPORT FOR: {activeScene.name} ---");
 
         // Get all root GameObjects in the scene

@@ -41,26 +41,19 @@ public class DesktopUIManager : MonoBehaviour
         }
 
         fadePanelAnimator.SetTrigger("FadeIn");
-
         yield return new WaitForSeconds(2f);
 
-        bool wasMajorTaskCompleted = TaskManager.Instance.IsTaskComplete(TaskManager.Instance.ActiveMajorTask);
+        int minorTasksDone = TaskManager.Instance.minorTasksCompletedThisChapter;
+        int majorTasksDone = DayManager.Instance.CanAdvanceChapter() ? 1 : 0;
+        CurrencyManager.Instance.AddCurrency(minorTasksDone, majorTasksDone);
         DayManager.Instance.EndDayAndDecayStats();
 
-        CurrencyManager.Instance.AddCurrency(TaskManager.Instance.minorTasksCompleted, TaskManager.Instance.majorTasksCompleted);
-
-        if (wasMajorTaskCompleted)
+        if (majorTasksDone > 0)
         {
-            DayManager.Instance.AdvanceToNextChapter();
             PetAnimationManager.Instance.StageChange();
-        }
-        else
-        {
-            TaskManager.Instance.PrepareForNextDay();
         }
 
         ViewManager.Instance.GoToLoginView();
-
         fadePanelAnimator.SetTrigger("FadeOut");
     }
 }

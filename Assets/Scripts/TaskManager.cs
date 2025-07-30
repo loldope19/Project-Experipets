@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine.UI;
 
 public class TaskManager : MonoBehaviour
 {
@@ -11,35 +12,30 @@ public class TaskManager : MonoBehaviour
     [SerializeField] private List<TasksScriptable> majorTasksInOrder;
     [SerializeField] private List<TasksScriptable> allMinorTasks;
 
-    // --- Internal State Variables (Managed by the script) ---
-    private TasksScriptable activeMajorTask;
-    public TasksScriptable ActiveMajorTask { get { return activeMajorTask; } }
-
-    private List<TasksScriptable> availableMinorTasks;
-    private List<TasksScriptable> dailyMinorTasks;
-    private List<TasksScriptable> completedChapterTasks;
-    private Dictionary<TasksScriptable, int> taskCooldowns;
-
-    // --- Progress Tracking ---
-    private Dictionary<TasksScriptable, int> itemTaskProgress;
-    public int minorTasksCompleted = 0;
-    public int majorTasksCompleted = 0;
-
     [Header("UI References")]
     [SerializeField] private GameObject taskListUIParent;
     [SerializeField] private GameObject taskUIPrefab;
 
+    [Header("Major Task UI")]
+    [SerializeField] private GameObject majorTaskUIContainer;
+    [SerializeField] private Slider majorTaskSlider;
+
+    [Header("External References")]
     [SerializeField] private PetCareUIManager uiManager;
+
+    // --- Internal State ---
+    private TasksScriptable activeMajorTask;
+    private List<TasksScriptable> availableMinorTasks;
+    private readonly List<TasksScriptable> dailyMinorTasks = new();
+    private readonly List<TasksScriptable> completedMinorTasks = new();
+    private readonly Dictionary<TasksScriptable, int> taskCooldowns = new();
+    private readonly Dictionary<TasksScriptable, int> itemTaskProgress = new(); 
+    public int minorTasksCompletedThisChapter = 0;
 
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); }
         else { Instance = this; }
-    }
-
-    private void Start()
-    {
-        LoadChapterTasks(1);
     }
 
     private void Update()
@@ -49,22 +45,32 @@ public class TaskManager : MonoBehaviour
 
     public void LoadChapterTasks(int chapterNumber)
     {
-        if (chapterNumber - 1 < majorTasksInOrder.Count)
+        // Reset progress when a new chapter loads
+        minorTasksCompletedThisChapter = 0;
+        itemTaskProgress.Clear();
+        completedMinorTasks.Clear();
+        dailyMinorTasks.Clear();
+        taskCooldowns.Clear();
+        availableMinorTasks = new List<TasksScriptable>(allMinorTasks);
+
+        // --- Major Task Logic ---
+        // Prologue (Chapter 0) has no major task.
+        if (chapterNumber == 0)
+        {
+            activeMajorTask = null;
+            majorTaskUIContainer.SetActive(false);
+        }
+        else if (chapterNumber - 1 < majorTasksInOrder.Count)
         {
             activeMajorTask = majorTasksInOrder[chapterNumber - 1];
+            majorTaskUIContainer.SetActive(true);
         }
         else
         {
-            Debug.LogError("Trying to load a chapter that doesn't have a Major Task assigned!");
-            return;
+            Debug.LogError($"Trying to load Chapter {chapterNumber} but no Major Task is assigned!");
+            activeMajorTask = null;
+            majorTaskUIContainer.SetActive(false);
         }
-
-        // The pool of available minor tasks is ALWAYS the full list.
-        availableMinorTasks = new List<TasksScriptable>(allMinorTasks);
-        dailyMinorTasks = new List<TasksScriptable>();
-        completedChapterTasks = new List<TasksScriptable>();
-        taskCooldowns = new Dictionary<TasksScriptable, int>();
-        itemTaskProgress = new Dictionary<TasksScriptable, int>();
 
         SelectDailyTasks();
         UpdateTaskUI();
@@ -72,20 +78,18 @@ public class TaskManager : MonoBehaviour
 
     public void PrepareForNextDay()
     {
+        // Cooldown logic remains the same
         if (taskCooldowns.Count > 0)
         {
-            var cooledDownTasks = new List<TasksScriptable>();
-            foreach (var task in taskCooldowns.Keys.ToList())
+            var cooledDownTasks = taskCooldowns.Keys.ToList();
+            foreach (var task in cooledDownTasks)
             {
                 taskCooldowns[task]--;
-                if (taskCooldowns[task] <= 0) { cooledDownTasks.Add(task); }
+                if (taskCooldowns[task] <= 0) { taskCooldowns.Remove(task); }
             }
-            foreach (var task in cooledDownTasks) { taskCooldowns.Remove(task); }
         }
-
-        minorTasksCompleted = 0;
-        majorTasksCompleted = 0;
-
+        
+        // Remove completed tasks from the daily list
         dailyMinorTasks.RemoveAll(task => IsTaskComplete(task));
 
         SelectDailyTasks();
@@ -94,7 +98,7 @@ public class TaskManager : MonoBehaviour
 
     private void SelectDailyTasks()
     {
-        int tasksNeeded = 2 - dailyMinorTasks.Count;
+        int tasksNeeded = 3 - dailyMinorTasks.Count;
         if (tasksNeeded <= 0) return;
 
         var selectableTasks = availableMinorTasks.Where(t => !taskCooldowns.ContainsKey(t) && !dailyMinorTasks.Contains(t)).ToList();
@@ -103,13 +107,13 @@ public class TaskManager : MonoBehaviour
         {
             int randomIndex = Random.Range(0, selectableTasks.Count);
             TasksScriptable newTask = selectableTasks[randomIndex];
-
             dailyMinorTasks.Add(newTask);
             selectableTasks.RemoveAt(randomIndex);
 
-            if (newTask.goalType == TaskGoalType.UseSpecificItem && !itemTaskProgress.ContainsKey(newTask))
+            // Reset progress for new item tasks
+            if (newTask.goalType == TaskGoalType.UseSpecificItem)
             {
-                itemTaskProgress.Add(newTask, 0);
+                itemTaskProgress[newTask] = 0;
             }
         }
     }
@@ -130,11 +134,7 @@ public class TaskManager : MonoBehaviour
                     case TaskCategories.Play: currentStatValue = PetStats.Instance.happiness; break;
                 }
 
-                if (currentStatValue >= task.amountToReach)
-                {
-                    MarkTaskAsComplete(task);
-                    UpdateTaskUI();
-                }
+                if (currentStatValue >= task.amountToReach) MarkTaskAsComplete(task);
             }
         }
     }
@@ -159,86 +159,66 @@ public class TaskManager : MonoBehaviour
 
     private void MarkTaskAsComplete(TasksScriptable task)
     {
-        if (completedChapterTasks.Contains(task)) return;
-
-        if(task.taskType == TaskType.Minor) minorTasksCompleted++;
-        else if (task.taskType == TaskType.Major) majorTasksCompleted++;
-
-            completedChapterTasks.Add(task);
-        Debug.Log($"Task Completed: {task.description}");
-
         if (task.taskType == TaskType.Minor)
         {
-            taskCooldowns[task] = 3;
-        }
+            if (!completedMinorTasks.Contains(task))
+            {
+                completedMinorTasks.Add(task);
+                minorTasksCompletedThisChapter++;
+                taskCooldowns[task] = 3;
+                Debug.Log($"Minor Task Completed: {task.description}. Progress: {minorTasksCompletedThisChapter}");
 
-        CheckMajorTaskCompletion();
+                CheckMajorTaskCompletion();
+            }
+        }
     }
+
 
     private void CheckMajorTaskCompletion()
     {
         if (activeMajorTask == null || IsTaskComplete(activeMajorTask)) return;
 
-        int minorTasksDone = completedChapterTasks.Count(t => t.taskType == TaskType.Minor);
-
-        if (minorTasksDone >= activeMajorTask.minorTasksRequired)
+        if (minorTasksCompletedThisChapter >= activeMajorTask.minorTasksRequired)
         {
-            MarkTaskAsComplete(activeMajorTask);
             Debug.Log($"MAJOR TASK COMPLETED: {activeMajorTask.description}");
+            if (uiManager != null) uiManager.ShowMajorTaskCompletedPopup();
 
-            if (uiManager != null)
-            {
-                uiManager.ShowMajorTaskCompletedPopup();
-            }
+            DayManager.Instance.CompleteMajorTask();
         }
     }
 
     public bool IsTaskComplete(TasksScriptable task)
     {
-        return completedChapterTasks.Contains(task);
+        return completedMinorTasks.Contains(task);
     }
 
     private void UpdateTaskUI()
     {
-        // Clear old UI
+        // Clear old minor tasks UI
         foreach (Transform child in taskListUIParent.transform) { Destroy(child.gameObject); }
 
-        // Display Major Task
+        // --- Update Major Task UI ---
         if (activeMajorTask != null)
         {
-            GameObject majorTaskUI = Instantiate(taskUIPrefab, taskListUIParent.transform);
-            TextMeshProUGUI majorText = majorTaskUI.transform.Find("Description_Text").GetComponent<TextMeshProUGUI>();
-            int progress = completedChapterTasks.Count(t => t.taskType == TaskType.Minor);
-            majorText.text = $"{activeMajorTask.description} ({progress}/{activeMajorTask.minorTasksRequired})";
-            if (IsTaskComplete(activeMajorTask))
-            {
-                majorText.fontStyle = FontStyles.Strikethrough;
-                majorText.color = Color.gray;
-            }
+            majorTaskSlider.maxValue = activeMajorTask.minorTasksRequired;
+            majorTaskSlider.value = minorTasksCompletedThisChapter;
         }
 
-        // Display the 2 Daily Minor Tasks
-        if (dailyMinorTasks == null) return;
+        // --- Display 3 Daily Minor Tasks ---
         foreach (var task in dailyMinorTasks)
         {
             GameObject taskUIInstance = Instantiate(taskUIPrefab, taskListUIParent.transform);
-            TextMeshProUGUI descriptionText = taskUIInstance.transform.Find("Description_Text").GetComponent<TextMeshProUGUI>();
+            TaskUI taskUIComponent = taskUIInstance.GetComponent<TaskUI>();
 
+            // We need a proper way to check if a task is complete for the UI
+            bool isComplete = IsTaskComplete(task);
+            taskUIComponent.Setup(task, isComplete);
+
+            // Update progress text for item tasks
             if (task.goalType == TaskGoalType.UseSpecificItem)
             {
-                // Ensure progress data exists before trying to access it
                 int currentProgress = itemTaskProgress.ContainsKey(task) ? itemTaskProgress[task] : 0;
-                descriptionText.text = $"{task.description} ({currentProgress}/{task.requiredItemCount})";
-            }
-            else
-            {
-                descriptionText.text = task.description;
-            }
-
-            if (IsTaskComplete(task))
-            {
-                descriptionText.fontStyle = FontStyles.Strikethrough;
-                descriptionText.color = Color.gray;
+                taskUIComponent.UpdateProgress(currentProgress, task.requiredItemCount);
             }
         }
     }

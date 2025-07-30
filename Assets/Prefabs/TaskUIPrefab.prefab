@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3275652855819732385}
   - component: {fileID: 7365784507627210670}
+  - component: {fileID: 8843882677177987986}
   m_Layer: 5
   m_Name: TaskUIPrefab
   m_TagString: Untagged
@@ -198,6 +199,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8843882677177987986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238255422745733021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47da846dfbbc592458168d2efd243bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  descriptionText: {fileID: 2959447354949780660}
+  checkboxImage: {fileID: 2806313629094278959}
+  uncheckedSprite: {fileID: 21300000, guid: abcc129a3cdc4154ead50fb798b06d81, type: 3}
+  checkedSprite: {fileID: 21300000, guid: b0b0f923b9cbdb6489eff3cded3b8677, type: 3}
 --- !u!1 &7775162142615695382
 GameObject:
   m_ObjectHideFlags: 0
