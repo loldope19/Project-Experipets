@@ -25,6 +25,11 @@ public class PetDropTarget : MonoBehaviour, IDropHandler
             droppedItem.category == ItemCategory.Medicine ||
             droppedItem.category == ItemCategory.Treat)
         {
+            if (!PlayerData.Instance.isPrologueComplete)
+            {
+                DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_04_FeedTutorialComplete");
+            }
+
             Debug.Log($"Used consumable {droppedItem.name} on the pet!");
             PetStats.Instance.ApplyItemEffects(droppedItem);
             TaskManager.Instance.OnItemUsed(droppedItem);
@@ -42,14 +47,23 @@ public class PetDropTarget : MonoBehaviour, IDropHandler
             switch (droppedItem.toolType)
             {
                 case ToolType.Ball:
+                    // Ayo Dun, Ball play is done via clicking on the ball and then clicking on a spawn area
+                    // (literally the free space on the PC)
+                    // NOT via dropping it on the poor guy;
                     PetAnimationManager.Instance.Ball();
                     break;
                 case ToolType.DraggableToy:
                     PetAnimationManager.Instance.Bone();
                     break;
                 case ToolType.LaserPointer:
+                    // Ayo Dun, Laser play is done via clicking on the laser; that's it
                     PetAnimationManager.Instance.Laser();
                     break;
+            }
+
+            if (!PlayerData.Instance.isPrologueComplete)
+            {
+                DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_05_PlayTutorialComplete");
             }
 
             PetStats.Instance.Play(droppedItem.happinessEffect);

@@ -30,6 +30,14 @@ public class ToolModeController : MonoBehaviour
 
     public void SetToolMode(ToolType tool)
     {
+        if (tool == ToolType.LaserPointer && !PlayerData.Instance.isPrologueComplete)
+        {
+            Debug.Log("Laser Pointer is disabled during the prologue.");
+            currentToolMode = ToolType.None;
+            DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_Special_LaserPointer");
+            return; // Exit the function before any other logic runs
+        }
+
         if (currentToolMode == tool)
         {
             currentToolMode = ToolType.None;
@@ -103,6 +111,12 @@ public class ToolModeController : MonoBehaviour
         }
 
         PetStats.Instance.Play(15);
+
+        if (!PlayerData.Instance.isPrologueComplete)
+        {
+            DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_05_PlayTutorialComplete");
+        }
+
         SetToolMode(ToolType.None);
     }
 }

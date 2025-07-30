@@ -19,4 +19,4 @@ MonoBehaviour:
   amountToReach: 0
   requiredItem: {fileID: 0}
   requiredItemCount: 0
-  minorTasksRequired: 9
+  minorTasksRequired: 11

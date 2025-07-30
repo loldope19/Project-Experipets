@@ -2,18 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Dialogue", menuName = "ScriptableObjects/Dialogues/Dialogue", order = 0)]
 public class DialogueScriptable : ScriptableObject
 {
+    [Tooltip("Event to trigger AFTER this entire dialogue has finished.")]
+    public string eventToTriggerOnEnd;
+
     public List<DialogueStep> DialogueSteps;
 }
 
 [Serializable]
 public class DialogueStep
 {
+    public string CharacterName;
     [TextArea(1, 5)] public string Text;
     public List<DialogueOption> DialogueOptions;
+
+    [Tooltip("Optional: The name of an event to trigger in the GameEventManager.")]
+    public string eventToTrigger;
 }
 
 [Serializable]

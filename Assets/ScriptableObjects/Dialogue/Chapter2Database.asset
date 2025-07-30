@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7016598ada670c46aa7f9c551328473, type: 3}
+  m_Name: Chapter2Database
+  m_EditorClassIdentifier: 
+  DatabaseTag: Chapter2
+  Dialogues:
+  - {fileID: 11400000, guid: 0260fe8f7920f814187467a8b65358d8, type: 2}
+  - {fileID: 11400000, guid: d220b25b902f80e469e2fb34da604339, type: 2}
+  - {fileID: 11400000, guid: 79f0bd0de0a65724992b58078a2beca8, type: 2}
+  - {fileID: 11400000, guid: 41bf7744d6344e341827486d80f9357f, type: 2}
+  - {fileID: 11400000, guid: 428c625f411ffb74b9f53904215bdf30, type: 2}

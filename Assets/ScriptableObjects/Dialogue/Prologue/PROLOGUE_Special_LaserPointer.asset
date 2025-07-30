@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: PROLOGUE_Special_LaserPointer
+  m_EditorClassIdentifier: 
+  DialogueSteps:
+  - CharacterName: KEY
+    Text: Caretaker {PLAYER_NAME}. For safety reasons, I will not allow you to use
+      the Laser at your current training.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: We are currently running the risk of the creature running amok due to prolonged
+      laser exposure.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: You are, however, free to use the ball or give it a bone to chew on.
+    DialogueOptions: []
+    eventToTrigger: 

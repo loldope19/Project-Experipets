@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 /// <summary>
@@ -9,12 +10,20 @@ using TMPro;
 /// </summary>
 public class DialogueView : MonoBehaviour
 {
+    [Header("Core Components")]
     [SerializeField] private TMP_Text _mainTextbox;
+    [SerializeField] private TMP_Text _characterNameText;
     /// <summary>
     /// These options must be on a gameobject that has both a TMP_Text component, and a IDialogueProgressCallback to work
     /// </summary>
     [SerializeField] private List<GameObject> _dialogueOptions;
     [SerializeField] private float _scrollTimePerCharacter;
+
+    [Header("Visuals")]
+    [SerializeField] private Image _backingPanelImage;
+    [SerializeField] private Sprite _boxWithNameSprite;
+    [SerializeField] private Sprite _boxNoNameSprite;
+
 
     public void Activate()
     {
@@ -55,6 +64,7 @@ public class DialogueView : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private bool _isScrolling = false;
     private DialogueStep _currentDialogueStep;
     /// <summary>
     /// Call to display a dialogue step (if view is active)
@@ -64,93 +74,133 @@ public class DialogueView : MonoBehaviour
     {
         _currentDialogueStep = dialogueStep;
 
-        // Clear Text
+        if (!string.IsNullOrEmpty(dialogueStep.CharacterName))
+        {
+            _characterNameText.gameObject.SetActive(true);
+            _characterNameText.text = dialogueStep.CharacterName;
+            _backingPanelImage.sprite = _boxWithNameSprite;
+        }
+        else
+        {
+            _characterNameText.gameObject.SetActive(false);
+            _backingPanelImage.sprite = _boxNoNameSprite;
+        }
+
+        string processedText = dialogueStep.Text;
+        if (PlayerData.Instance != null && !string.IsNullOrEmpty(PlayerData.Instance.playerName))
+        {
+            processedText = processedText.Replace("{PLAYER_NAME}", PlayerData.Instance.playerName);
+        }
+
         _mainTextbox.text = "";
         foreach (var option in _dialogueOptions)
         {
             option.SetActive(false);
-
-            TMP_Text optionText = option.GetComponentInChildren<TMP_Text>();
-            if (optionText != null) optionText.text = "";
-
-            IDialogueProgressCallback optionCallback = option.GetComponentInChildren<IDialogueProgressCallback>();
-            if (optionCallback != null) optionCallback.CallbackIndex = -1;
         }
 
-        if (_scrollTimePerCharacter <= 0) ShowText();
-        else StartCoroutine(ScrollText());
+        if (!string.IsNullOrEmpty(dialogueStep.eventToTrigger))
+        {
+            GameEventManager.Instance.TriggerEvent(dialogueStep.eventToTrigger);
+        }
+
+        if (_scrollTimePerCharacter <= 0)
+        {
+            ShowText(processedText);
+        }
+        else
+        {
+            StartCoroutine(ScrollText(processedText));
+        }
     }
 
-    private void ShowText()
+    private void ShowText(string textToShow)
     {
-        // Set main textbox text
-        _mainTextbox.text = _currentDialogueStep.Text;
+        _mainTextbox.text = textToShow;
 
-        // Set option text boxes
         for (int i = 0; i < _dialogueOptions.Count; i++)
         {
             GameObject option = _dialogueOptions[i];
             TMP_Text optionText = option.GetComponentInChildren<TMP_Text>();
             IDialogueProgressCallback optionCallback = option.GetComponentInChildren<IDialogueProgressCallback>();
 
-            // If there exists an option for the step to be inserted into the option, set text, callback index, and display
             if (i < _currentDialogueStep.DialogueOptions.Count)
             {
-                if(optionText != null) optionText.text = _currentDialogueStep.DialogueOptions[i].OptionText;
-                if(optionCallback != null) optionCallback.CallbackIndex = i;
+                if (optionText != null) optionText.text = _currentDialogueStep.DialogueOptions[i].OptionText;
+                if (optionCallback != null) optionCallback.CallbackIndex = i;
                 option.SetActive(true);
             }
             else
             {
-                if(optionText != null) optionText.text = "";
-                if(optionCallback != null) optionCallback.CallbackIndex = -1;
+                if (optionText != null) optionText.text = "";
+                if (optionCallback != null) optionCallback.CallbackIndex = -1;
                 option.SetActive(false);
             }
         }
     }
 
-    private IEnumerator ScrollText()
+    private IEnumerator ScrollText(string textToScroll)
     {
+        _isScrolling = true;
+
         int charIndex = 0;
         float elapsedTime = 0f;
 
-        if (_currentDialogueStep == null || string.IsNullOrEmpty(_currentDialogueStep.Text))
+        if (string.IsNullOrEmpty(textToScroll))
         {
-            ShowText(); // fallback
+            ShowText(textToScroll); 
             yield break;
         }
 
-        while (charIndex < _currentDialogueStep.Text.Length)
+        while (charIndex < textToScroll.Length)
         {
-            _mainTextbox.text = _currentDialogueStep.Text.Substring(0, charIndex);
-            yield return new WaitForEndOfFrame();
+            _mainTextbox.text = textToScroll.Substring(0, charIndex + 1);
+            yield return null;
 
-            // Increment index
             elapsedTime += Time.unscaledDeltaTime;
             if (elapsedTime >= _scrollTimePerCharacter)
             {
                 elapsedTime = 0f;
-
-                if (charIndex >= _currentDialogueStep.Text.Length)
-                    break;
                 charIndex++;
-                if (charIndex >= _currentDialogueStep.Text.Length)
-                    break;
 
-                // Increment again if a backslash is encountered
-                if (_currentDialogueStep.Text[charIndex] == '\\')
-                    charIndex++;
+                if (charIndex >= textToScroll.Length) break;
 
-                // If no backslash is met, check if processing a special modifier (ie. marked by <>)
-                else if (_currentDialogueStep.Text[charIndex] == '<')
+                if (textToScroll[charIndex] == '<')
                 {
-                    // Keep progressing the index until a '>' is met up to the end of the text
-                    while (_currentDialogueStep.Text[charIndex] != '>' && charIndex < _currentDialogueStep.Text.Length)
+                    while (charIndex < textToScroll.Length && textToScroll[charIndex] != '>')
+                    {
                         charIndex++;
+                    }
                 }
             }
         }
 
-        ShowText();
+        ShowText(textToScroll);
+
+        _isScrolling = false;
+    }
+
+    public void ProgressDialogue()
+    {
+        if (_isScrolling)
+        {
+            _isScrolling = false;
+            StopAllCoroutines();
+            string processedText = _currentDialogueStep.Text;
+            if (PlayerData.Instance != null && !string.IsNullOrEmpty(PlayerData.Instance.playerName))
+            {
+                processedText = processedText.Replace("{PLAYER_NAME}", PlayerData.Instance.playerName);
+            }
+
+            ShowText(processedText);
+        }
+        else
+        {
+            DialogueManager.Instance.NextDialogueStep();
+        }
+    }
+
+    public bool IsCurrentlyScrolling()
+    {
+        return _isScrolling;
     }
 }

@@ -162,8 +162,15 @@ public class DialogueManager : MonoBehaviour
             return false;
         }
 
+        DialogueScriptable finishedDialogue = CurrentDialogue.Dialogue;
+
         // Remove last dialogue
         _activeDialogueStack.RemoveAt(_activeDialogueStack.Count - 1);
+
+        if (finishedDialogue != null && !string.IsNullOrEmpty(finishedDialogue.eventToTriggerOnEnd))
+        {
+            GameEventManager.Instance.TriggerEvent(finishedDialogue.eventToTriggerOnEnd);
+        }
 
         // Returns true if there is still a dialogue
         if (_activeDialogueStack.Count >= 1)

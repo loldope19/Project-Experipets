@@ -4,6 +4,14 @@ using System.Linq;
 using TMPro;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class DialogueData
+{
+    public int chapterNumber;
+    public string databaseTag;
+    public string dialogueTag;
+}
+
 public class TaskManager : MonoBehaviour
 {
     public static TaskManager Instance { get; private set; }
@@ -22,6 +30,10 @@ public class TaskManager : MonoBehaviour
 
     [Header("External References")]
     [SerializeField] private PetCareUIManager uiManager;
+    public bool canCheckTasks = false;
+
+    [Header("Chapter End Dialogues")]
+    [SerializeField] private List<DialogueData> chapterEndDialogues;
 
     // --- Internal State ---
     private TasksScriptable activeMajorTask;
@@ -40,7 +52,10 @@ public class TaskManager : MonoBehaviour
 
     private void Update()
     {
-        CheckAmountTasks();
+        if (canCheckTasks)
+        {
+            CheckAmountTasks();
+        }
     }
 
     public void LoadChapterTasks(int chapterNumber)
@@ -73,7 +88,7 @@ public class TaskManager : MonoBehaviour
         }
 
         SelectDailyTasks();
-        UpdateTaskUI();
+        RefreshAllTaskUIs();
     }
 
     public void PrepareForNextDay()
@@ -93,7 +108,7 @@ public class TaskManager : MonoBehaviour
         dailyMinorTasks.RemoveAll(task => IsTaskComplete(task));
 
         SelectDailyTasks();
-        UpdateTaskUI();
+        RefreshAllTaskUIs();
     }
 
     private void SelectDailyTasks()
@@ -142,7 +157,6 @@ public class TaskManager : MonoBehaviour
     public void OnItemUsed(ItemData itemUsed)
     {
         if (dailyMinorTasks == null) return;
-
         foreach (var task in dailyMinorTasks)
         {
             if (task.goalType == TaskGoalType.UseSpecificItem && task.requiredItem == itemUsed && !IsTaskComplete(task))
@@ -152,7 +166,10 @@ public class TaskManager : MonoBehaviour
                 {
                     MarkTaskAsComplete(task);
                 }
-                UpdateTaskUI();
+                else
+                {
+                    RefreshAllTaskUIs();
+                }
             }
         }
     }
@@ -169,6 +186,8 @@ public class TaskManager : MonoBehaviour
                 Debug.Log($"Minor Task Completed: {task.description}. Progress: {minorTasksCompletedThisChapter}");
 
                 CheckMajorTaskCompletion();
+
+                RefreshAllTaskUIs();
             }
         }
     }
@@ -181,9 +200,16 @@ public class TaskManager : MonoBehaviour
         if (minorTasksCompletedThisChapter >= activeMajorTask.minorTasksRequired)
         {
             Debug.Log($"MAJOR TASK COMPLETED: {activeMajorTask.description}");
-            if (uiManager != null) uiManager.ShowMajorTaskCompletedPopup();
 
-            DayManager.Instance.CompleteMajorTask();
+            DialogueData endDialogue = chapterEndDialogues.Find(d => d.chapterNumber == DayManager.Instance.GetCurrentChapter());
+            if (endDialogue != null)
+            {
+                DialogueManager.Instance.StartDialogue(endDialogue.databaseTag, endDialogue.dialogueTag);
+            }
+            else
+            {
+                Debug.LogWarning($"No end-of-chapter dialogue found for Chapter {DayManager.Instance.GetCurrentChapter()}!");
+            }
         }
     }
 
@@ -192,29 +218,24 @@ public class TaskManager : MonoBehaviour
         return completedMinorTasks.Contains(task);
     }
 
-    private void UpdateTaskUI()
+    public void RefreshAllTaskUIs()
     {
-        // Clear old minor tasks UI
         foreach (Transform child in taskListUIParent.transform) { Destroy(child.gameObject); }
 
-        // --- Update Major Task UI ---
         if (activeMajorTask != null)
         {
             majorTaskSlider.maxValue = activeMajorTask.minorTasksRequired;
             majorTaskSlider.value = minorTasksCompletedThisChapter;
         }
 
-        // --- Display 3 Daily Minor Tasks ---
         foreach (var task in dailyMinorTasks)
         {
             GameObject taskUIInstance = Instantiate(taskUIPrefab, taskListUIParent.transform);
             TaskUI taskUIComponent = taskUIInstance.GetComponent<TaskUI>();
 
-            // We need a proper way to check if a task is complete for the UI
             bool isComplete = IsTaskComplete(task);
             taskUIComponent.Setup(task, isComplete);
 
-            // Update progress text for item tasks
             if (task.goalType == TaskGoalType.UseSpecificItem)
             {
                 int currentProgress = itemTaskProgress.ContainsKey(task) ? itemTaskProgress[task] : 0;

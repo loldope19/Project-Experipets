@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class DayManager : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class DayManager : MonoBehaviour
     [Header("Day Management")]
     [SerializeField] private int currentDay = 1;
     [SerializeField] private int currentChapter = 0;
-    private bool canAdvanceChapter = false;
-    public bool CanAdvanceChapter() { return canAdvanceChapter; }
 
     [Header("Mess Spawning")]
     public static int messCount = 0;
@@ -30,24 +29,44 @@ public class DayManager : MonoBehaviour
     {
         UpdateDayUI();
         TaskManager.Instance.LoadChapterTasks(currentChapter);
+        StartCoroutine(StartChapterSequence(currentChapter));
     }
+
+    private IEnumerator StartChapterSequence(int chapter)
+    {
+        yield return ChapterTitleManager.Instance.ShowTitleForChapter(chapter);
+
+        //    (Dialogue tags are taken from the "IEPRFDV_ Story & Dialogue.pdf" document)
+        switch (chapter)
+        {
+            case 0: // Prologue
+                DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_01_WakeUp");
+                break;
+            case 1: // Chapter 1
+                DialogueManager.Instance.StartDialogue("Chapter1", "CHAPTER1_01_Intro");
+                break;
+            case 2: // Chapter 2
+                DialogueManager.Instance.StartDialogue("Chapter2", "CHAPTER2_01_Intro");
+                break;
+            case 3: // Chapter 3
+                DialogueManager.Instance.StartDialogue("Chapter3", "CHAPTER3_01_Intro");
+                break;
+            case 4: // Chapter 4
+                DialogueManager.Instance.StartDialogue("Chapter4", "CHAPTER4_01_Intro");
+                break;
+        }
+    }
+
+    public int GetCurrentChapter() { return currentChapter; }
 
     public void EndDayAndDecayStats()
     {
-        if (canAdvanceChapter)
-        {
-            AdvanceToNextChapter();
-            canAdvanceChapter = false;
-        }
-        else
-        {
-            currentDay++;
-            UpdateDayUI();
-            if (PetStats.Instance != null) PetStats.Instance.DecayStatsForNewDay(messCount);
-            SpawnPoop();
-            TaskManager.Instance.PrepareForNextDay();
-            Debug.Log($"Advanced to Day {currentDay}. Stats have decayed.");
-        }
+        currentDay++;
+        UpdateDayUI();
+        if (PetStats.Instance != null) PetStats.Instance.DecayStatsForNewDay(messCount);
+        SpawnPoop();
+        TaskManager.Instance.PrepareForNextDay();
+        Debug.Log($"Advanced to Day {currentDay}. Stats have decayed.");
     }
 
     private void UpdateDayUI()
@@ -58,16 +77,18 @@ public class DayManager : MonoBehaviour
         }
     }
 
-    public void AdvanceToNextChapter()
+    public void AdvanceToNextChapter(int chapterToEnd)
     {
-        currentChapter++;
-        // currentDay = 1;
+        currentChapter = chapterToEnd;
+        EndDayAndDecayStats();
         UpdateDayUI();
         Debug.Log($"Advancing to Chapter {currentChapter}");
         if (TaskManager.Instance != null)
         {
             TaskManager.Instance.LoadChapterTasks(currentChapter);
         }
+
+        StartCoroutine(StartChapterSequence(currentChapter));
     }
 
     private void SpawnPoop()
@@ -79,12 +100,5 @@ public class DayManager : MonoBehaviour
             newPoop.GetComponent<RectTransform>().localPosition = spawnPosition;
             Debug.Log("Poop spawned at local position: " + spawnPosition);
         }
-    }
-
-    public void CompleteMajorTask()
-    {
-        canAdvanceChapter = true;
-        Debug.Log("Major task complete! The player can now advance to the next chapter by ending the day.");
-        // You could also trigger a dialogue here to inform the player.
     }
 }

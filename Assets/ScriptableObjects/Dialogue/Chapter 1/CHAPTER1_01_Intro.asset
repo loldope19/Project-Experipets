@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CHAPTER1_01_Intro
+  m_EditorClassIdentifier: 
+  eventToTriggerOnEnd: 
+  DialogueSteps:
+  - CharacterName: 
+    Text: The screen flickers on again. You find yourself seated in the same softly
+      lit room, the familiar hum of machinery now oddly comforting.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: A single beep echoes out - the KEY terminal has activated once more.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Good morning, Caretaker {PLAYER_NAME}. Subject 121 awaits your presence.
+    DialogueOptions: []
+    eventToTrigger: TriggerPetCareReboot
+  - CharacterName: 
+    Text: You stretch your arms and glance at the screen. The creature is already
+      awake, gently bobbing up and down in its containment space.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "This round ball of fur has no visible face. It\u2019s just\u2026 fur,
+      rising and falling as if it were breathing."
+    DialogueOptions:
+    - OptionText: '"Good morning, little guy."'
+      DialogueBranch: {fileID: 11400000, guid: 32928b9cd7b77ee4d966c9a6168f46d5, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CYou\u2019re looking a bit chipper today.\u201D"
+      DialogueBranch: {fileID: 0}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CIt feels like it's staring at me\u2026\u201D"
+      DialogueBranch: {fileID: 0}
+      BranchStartStepIndex: 0
+    eventToTrigger: 

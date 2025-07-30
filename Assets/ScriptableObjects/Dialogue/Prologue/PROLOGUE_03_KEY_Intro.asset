@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: PROLOGUE_03_KEY_Intro
+  m_EditorClassIdentifier: 
+  DialogueSteps:
+  - CharacterName: Computer Screen
+    Text: Then allow me to welcome you to O.S.C. Institution's Creature Care Division.
+    DialogueOptions: []
+    eventToTrigger: NameConfirmed
+  - CharacterName: 
+    Text: The computer blacks out, and starts up again while making these clicking
+      noises that echo around the room. As it finishes booting up, the screen goes
+      dark but shortly after, texts start to display on the screen.
+    DialogueOptions: []
+    eventToTrigger: TriggerDesktopReboot
+  - CharacterName: Computer Screen
+    Text: Hello.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Computer Screen
+    Text: I am KEY, your personal computer assistant.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: We are sorry for the inconvenience and location for the reviewing of your
+      application.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Our servers are currently overloaded with various applications due to the
+      company reducing the necessary requirements to apply for a position in the
+      company.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Hence, the company has decided to prepare various testing areas at O.S.C.
+      Insitution branches worldwide.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Pls bear with us.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: The computer screen or KEY goes dark again and shortly displays text and
+      loading screens as if the system is trying to boot something up again and after
+      a while loads up a window.
+    DialogueOptions: []
+    eventToTrigger: TriggerDesktopReboot
+  - CharacterName: Player
+    Text: What is that thing?
+    DialogueOptions: []
+    eventToTrigger: PanelBlack
+  - CharacterName: 
+    Text: "You get closer towards the screen and something slowly starts moving,
+      it shakes, rattles, it rolls, cracks start to form, a hole is made in the center.\r"
+    DialogueOptions: []
+    eventToTrigger: ShowPetCareScreen
+  - CharacterName: 
+    Text: "...and you see what seems to be an eye staring right at you. \r..."
+    DialogueOptions: []
+    eventToTrigger: PanelNone
+  - CharacterName: Player
+    Text: What the f-
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: 'A pop-up window by KEY is displayed while you are close to the screen
+      detailing the necessary requirements to apply for a position in the company. '
+    DialogueOptions: []
+    eventToTrigger: PanelBlack
+  - CharacterName: 
+    Text: After hopefully having read the whole thing and accepting, the pop-up window
+      closes revealing the creature that was in the egg.
+    DialogueOptions: []
+    eventToTrigger: PanelDefault
+  - CharacterName: Player
+    Text: It looks, weird, but kind of cute.
+    DialogueOptions: []
+    eventToTrigger: TriggerPetCareReboot
+  - CharacterName: KEY
+    Text: Hello, This is KEY.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: 'What you are seeing right now is manipulated live footage of our new project. '
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "Due to testing purposes, we can\u2019t show the creature or this project
+      in its entirety to you, our\u2026 Caretaker. "
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: Caretaker?
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: The previous Caretaker, your predecessor, thought it best to make future
+      Caretakers work with this kind of system instead as it allows a Caretaker to
+      do their job effectively.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: "I\u2019m guessing the job has to do something about this creature?"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Precisely.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: And I guess I have to take care of it?
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Precisely.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: ...
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: As for your tasks, Caretaker...
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: You are tasked with playing with them, feeding this creature, and of course
+      keeping them clean.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: It is as simple as that.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Supplies are readily available at your disposal to help ease you into this
+      role.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Let us start by feeding this creature.
+    DialogueOptions: []
+    eventToTrigger: StartFeedTutorial

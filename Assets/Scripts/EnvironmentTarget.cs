@@ -28,5 +28,9 @@ public class EnvironmentTarget : MonoBehaviour
         Debug.Log($"Cleaning {gameObject.name}!");
         Destroy(gameObject);
         PetStats.Instance.Clean(5);
+        if (!PlayerData.Instance.isPrologueComplete)
+        {
+            DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_06_CleanTutorialComplete");
+        }
     }
 }

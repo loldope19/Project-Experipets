@@ -44,14 +44,8 @@ public class DesktopUIManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         int minorTasksDone = TaskManager.Instance.minorTasksCompletedThisChapter;
-        int majorTasksDone = DayManager.Instance.CanAdvanceChapter() ? 1 : 0;
-        CurrencyManager.Instance.AddCurrency(minorTasksDone, majorTasksDone);
+        CurrencyManager.Instance.AddCurrency(minorTasksDone, 0);
         DayManager.Instance.EndDayAndDecayStats();
-
-        if (majorTasksDone > 0)
-        {
-            PetAnimationManager.Instance.StageChange();
-        }
 
         ViewManager.Instance.GoToLoginView();
         fadePanelAnimator.SetTrigger("FadeOut");

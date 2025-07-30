@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CHAPTER2_01_Intro
+  m_EditorClassIdentifier: 
+  eventToTriggerOnEnd: 
+  DialogueSteps:
+  - CharacterName: 
+    Text: The KEY terminal boots up. The interface is the same. So is the desk. So
+      is the room.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "But this time\u2026 the startup tone is slower, drawn out.\r\n"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Good day, Caretaker. We are resuming supervised interaction with Subject
+      121.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "Note: You may observe slight changes in the subject\u2019s behaviour.
+      This is expected."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: 'You glance at the enclosure. Subject 121 is pressed into the far corner,
+      balled tightly. '
+    DialogueOptions: []
+    eventToTrigger: TriggerPetCareReboot
+  - CharacterName: 
+    Text: The fur on one side of its face has parted slightly.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "There\u2019s\u2026 an eye."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Small. Glossy. Watching.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: It blinks once, slowly, then remains open.
+    DialogueOptions:
+    - OptionText: "\u201CWhat\u2019s wrong with it?\u201D"
+      DialogueBranch: {fileID: 11400000, guid: d220b25b902f80e469e2fb34da604339, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CKEY, did something happen while I was gone?\u201D"
+      DialogueBranch: {fileID: 0}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CIt\u2019s just sitting there...\u201D"
+      DialogueBranch: {fileID: 0}
+      BranchStartStepIndex: 0
+    eventToTrigger: 

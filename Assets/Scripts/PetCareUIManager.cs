@@ -44,6 +44,12 @@ public class PetCareUIManager : MonoBehaviour
 
     private void OnEnable()
     {
+        if (TaskManager.Instance != null)
+        {
+            TaskManager.Instance.canCheckTasks = true;
+            Debug.Log("Entered Pet Care View. Task checking is now ENABLED.");
+        }
+
         if (foodInventoryPanel.gameObject.activeSelf)
         {
             foodInventoryPanel.Show(ItemCategory.Food);
@@ -61,6 +67,13 @@ public class PetCareUIManager : MonoBehaviour
 
     private void OnDisable()
     {
+        if (TaskManager.Instance != null)
+        {
+            TaskManager.Instance.canCheckTasks = false;
+            TaskManager.Instance.RefreshAllTaskUIs();
+            Debug.Log("Exited Pet Care View. Task checking is now DISABLED.");
+        }
+
         if (ToolModeController.Instance != null)
         {
             ToolModeController.Instance.SetToolMode(ToolType.None);
@@ -68,7 +81,7 @@ public class PetCareUIManager : MonoBehaviour
         }
     }
 
-    private void HideAllSubMenus()
+    public void HideAllSubMenus()
     {
         feedSubMenu.SetActive(false);
         cleanSubMenu.SetActive(false);
@@ -77,7 +90,7 @@ public class PetCareUIManager : MonoBehaviour
         ToolModeController.Instance.SetToolMode(ToolType.None);
     }
 
-    private void HideAllPanels()
+    public void HideAllPanels()
     {
         foodInventoryPanel.gameObject.SetActive(false);
         cleanInventoryPanel.gameObject.SetActive(false);
