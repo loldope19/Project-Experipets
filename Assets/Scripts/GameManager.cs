@@ -31,6 +31,12 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
+        IResettable[] resettableObjects = FindObjectsOfType<PlayerData>();
+        foreach (var obj in resettableObjects)
+        {
+            obj.ResetState();
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

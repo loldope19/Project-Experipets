@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : MonoBehaviour, IResettable
 {
     public static PlayerData Instance { get; private set; }
 
@@ -19,5 +19,13 @@ public class PlayerData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void ResetState()
+    {
+        playerName = "";
+        isPrologueComplete = false;
+        isNameConfirmed = false;
+        Debug.Log("PlayerData state has been reset.");
     }
 }
