@@ -87,6 +87,11 @@ public class DialogueView : MonoBehaviour
         }
 
         string processedText = dialogueStep.Text;
+        if (!string.IsNullOrEmpty(SystemInfoManager.Instance.pcUsername))
+        {
+            processedText = processedText.Replace("{PC_USERNAME}", SystemInfoManager.Instance.pcUsername);
+        }
+
         if (PlayerData.Instance != null && !string.IsNullOrEmpty(PlayerData.Instance.playerName))
         {
             processedText = processedText.Replace("{PLAYER_NAME}", PlayerData.Instance.playerName);

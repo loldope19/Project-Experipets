@@ -167,6 +167,19 @@ public class DialogueManager : MonoBehaviour
         // Remove last dialogue
         _activeDialogueStack.RemoveAt(_activeDialogueStack.Count - 1);
 
+        if (CurrentDialogue != null && CurrentDialogue.CurrentStep != null)
+        {
+            foreach (var option in CurrentDialogue.CurrentStep.DialogueOptions)
+            {
+                if (option.DialogueBranch == finishedDialogue && option.ConvergenceDialogue != null)
+                {
+                    Debug.Log($"Branch ended. Converging to new dialogue: {option.ConvergenceDialogue.name}");
+                    _activeDialogueStack.Add(new DialogueTracker(option.ConvergenceDialogue, -1));
+                    return true;
+                }
+            }
+        }
+
         if (finishedDialogue != null && !string.IsNullOrEmpty(finishedDialogue.eventToTriggerOnEnd))
         {
             GameEventManager.Instance.TriggerEvent(finishedDialogue.eventToTriggerOnEnd);

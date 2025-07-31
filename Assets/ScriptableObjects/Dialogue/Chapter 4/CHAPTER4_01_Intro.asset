@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CHAPTER4_01_Intro
+  m_EditorClassIdentifier: 
+  eventToTriggerOnEnd: 
+  DialogueSteps:
+  - CharacterName: 
+    Text: The monitor buzzes to life, pale green data crawling across the screen.
+    DialogueOptions: []
+    eventToTrigger: PanelDefault
+  - CharacterName: 
+    Text: "No sound cues. No startup message. Just a slow fade into the terminal\u2019s
+      OS."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "Everything feels\u2026 off."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: ...You have returned. Consistency is commendable.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Subject 121 is transitioning into **72213726241522 222222223**.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: ...
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Visual anomalies have been catalogued. Auditory irregularities have begun.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: You glance toward the enclosure.
+    DialogueOptions: []
+    eventToTrigger: TriggerPetCareReboot
+  - CharacterName: 
+    Text: It's changed, again.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Its shape is now far from what it used to be.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Too still. Too aware.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Two glossy eyes are now visible, far apart, blinking asynchronously.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "Above those eyes, a claw-like structure\u2026 mandibles and molars."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Below, tendrils, no, tentacles, emerge from its sides, coiling lazily in
+      the air.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: It watches you.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "But it does not move\u2026 unless you do."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: ...
+    DialogueOptions:
+    - OptionText: "\u201CIt has two eyes now. And that thing\u2026 on top\u201D"
+      DialogueBranch: {fileID: 11400000, guid: 3f38b3b2c6fbd9a4799e7161ad289350, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 1165b37930ab14940a5f52fb3a2d374c, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CWhat is it even mutating into\u2026\u201D"
+      DialogueBranch: {fileID: 11400000, guid: d64d6241b25575c49a1ece2b0aaa802e, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 1165b37930ab14940a5f52fb3a2d374c, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CKEY, this is not\u2026 This isn\u2019t\u2026 what even is
+        this?\u201D"
+      DialogueBranch: {fileID: 11400000, guid: 6c7e518f739c9bd49ba1d727ebea848c, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 1165b37930ab14940a5f52fb3a2d374c, type: 2}
+      BranchStartStepIndex: 0
+    eventToTrigger: 

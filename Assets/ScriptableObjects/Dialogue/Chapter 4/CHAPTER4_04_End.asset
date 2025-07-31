@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CHAPTER4_04_End
+  m_EditorClassIdentifier: 
+  eventToTriggerOnEnd: EjectPlayer
+  DialogueSteps:
+  - CharacterName: 
+    Text: You carry out the tasks.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "The second eye doesn\u2019t look at you."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: The first one never stops.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Each action ends with the same quiet thing.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: It lifts its tentacles, just slightly, and the top mouth parts in what
+      might be a smile.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Metrics optimal. Behavioral markers suggest imprinting success.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: You have done well.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: Player
+    Text: ...
+    DialogueOptions:
+    - OptionText: "\u201CKEY\u2026 What happens now?\u201D"
+      DialogueBranch: {fileID: 11400000}
+      ConvergenceDialogue: {fileID: 0}
+      BranchStartStepIndex: 8
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: Subject 121 will be preserved for continuity studies.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: You will be assessed for reintegration or re-employment.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: ...
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: ...Rest now. You are relieved of your duties.
+    DialogueOptions: []
+    eventToTrigger: PanelNone
+  - CharacterName: 
+    Text: The lights power down.
+    DialogueOptions: []
+    eventToTrigger: Ch4_LightsDown
+  - CharacterName: 
+    Text: "The hum dies.\r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: But inside the dark, the enclosure does not.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: You see its silhouette, its body tilted, tentacles, splayed across the
+      enclosure walls.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: Two eyes reflect the faintest light.
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "The mouth\u2026 opens slowly at the top of its head."
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: You swear you can hear it inhale from behind the enclosure walls.
+    DialogueOptions: []
+    eventToTrigger: PanelBlack
+  - CharacterName: 
+    Text: ...
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: ... ... ...
+    DialogueOptions: []
+    eventToTrigger: 

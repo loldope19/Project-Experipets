@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: Chapter4Database
   m_EditorClassIdentifier: 
   DatabaseTag: Chapter4
-  Dialogues: []
+  Dialogues:
+  - {fileID: 11400000, guid: 668ca06bd04e2dd428c13860b3b44181, type: 2}
+  - {fileID: 11400000, guid: 3f38b3b2c6fbd9a4799e7161ad289350, type: 2}
+  - {fileID: 11400000, guid: d64d6241b25575c49a1ece2b0aaa802e, type: 2}
+  - {fileID: 11400000, guid: 6c7e518f739c9bd49ba1d727ebea848c, type: 2}
+  - {fileID: 11400000, guid: 1165b37930ab14940a5f52fb3a2d374c, type: 2}
+  - {fileID: 11400000, guid: 465813654391c2c4e88ce276f619b772, type: 2}

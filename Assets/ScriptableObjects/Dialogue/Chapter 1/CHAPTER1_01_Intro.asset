@@ -38,11 +38,14 @@ MonoBehaviour:
     DialogueOptions:
     - OptionText: '"Good morning, little guy."'
       DialogueBranch: {fileID: 11400000, guid: 32928b9cd7b77ee4d966c9a6168f46d5, type: 2}
+      ConvergenceDialogue: {fileID: 0}
       BranchStartStepIndex: 0
     - OptionText: "\u201CYou\u2019re looking a bit chipper today.\u201D"
-      DialogueBranch: {fileID: 0}
+      DialogueBranch: {fileID: 11400000, guid: a4b40d33b3a6efb4db9eccb4da866524, type: 2}
+      ConvergenceDialogue: {fileID: 0}
       BranchStartStepIndex: 0
     - OptionText: "\u201CIt feels like it's staring at me\u2026\u201D"
-      DialogueBranch: {fileID: 0}
+      DialogueBranch: {fileID: 11400000, guid: 607b7e61a85d6ce4abfd9b44dcc23c64, type: 2}
+      ConvergenceDialogue: {fileID: 0}
       BranchStartStepIndex: 0
     eventToTrigger: 

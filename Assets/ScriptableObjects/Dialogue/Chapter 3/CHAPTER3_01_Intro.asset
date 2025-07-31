@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b93f98c47f03b48944e4c67253c1b9, type: 3}
+  m_Name: CHAPTER3_01_Intro
+  m_EditorClassIdentifier: 
+  eventToTriggerOnEnd: 
+  DialogueSteps:
+  - CharacterName: 
+    Text: The screen buzzes faintly before KEY speaks.
+    DialogueOptions: []
+    eventToTrigger: PanelDefault
+  - CharacterName: 
+    Text: "The usual calm greeting now has a brief delay.\r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "Welcome back, Caretaker {PLAYER_NAME}. \r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "Let us resume supervised interaction with Subject 121.\r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "Note: Subject 121\u2019s ocular behaviour has intensified. Its visual
+      tracking is now present during active sessions.\r"
+    DialogueOptions: []
+    eventToTrigger: PanelBlack
+  - CharacterName: 
+    Text: "You glance at the enclosure.\r"
+    DialogueOptions: []
+    eventToTrigger: ShowPetCareScreen
+  - CharacterName: 
+    Text: "Subject 121 no longer hides in corners.\r"
+    DialogueOptions: []
+    eventToTrigger: PanelDefault
+  - CharacterName: 
+    Text: "Unblinking.\r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: 
+    Text: "Following you.\r"
+    DialogueOptions: []
+    eventToTrigger: 
+  - CharacterName: KEY
+    Text: "...\r"
+    DialogueOptions:
+    - OptionText: "\u201CIt\u2019s looking at me now.\u201D"
+      DialogueBranch: {fileID: 11400000, guid: 5a670e13f89c5944bbcbeb5a8e620e0b, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 9484abe924ecf284cb059e8379bfc648, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CHas the eye changed?\u201D"
+      DialogueBranch: {fileID: 11400000, guid: 8692f8c50b530464a85c0c07fa0b5176, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 9484abe924ecf284cb059e8379bfc648, type: 2}
+      BranchStartStepIndex: 0
+    - OptionText: "\u201CKEY, why does it feel like it knows I\u2019m here?\u201D"
+      DialogueBranch: {fileID: 11400000, guid: 79ac9c58bad52764f9538ea705ec07b0, type: 2}
+      ConvergenceDialogue: {fileID: 11400000, guid: 9484abe924ecf284cb059e8379bfc648, type: 2}
+      BranchStartStepIndex: 0
+    eventToTrigger: 

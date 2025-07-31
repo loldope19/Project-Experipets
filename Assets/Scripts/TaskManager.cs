@@ -39,7 +39,7 @@ public class TaskManager : MonoBehaviour
     private TasksScriptable activeMajorTask;
     private List<TasksScriptable> availableMinorTasks;
     private readonly List<TasksScriptable> dailyMinorTasks = new();
-    private readonly List<TasksScriptable> completedMinorTasks = new();
+    private List<TasksScriptable> completedMinorTasks = new();
     private readonly Dictionary<TasksScriptable, int> taskCooldowns = new();
     private readonly Dictionary<TasksScriptable, int> itemTaskProgress = new(); 
     public int minorTasksCompletedThisChapter = 0;
@@ -103,9 +103,9 @@ public class TaskManager : MonoBehaviour
                 if (taskCooldowns[task] <= 0) { taskCooldowns.Remove(task); }
             }
         }
-        
-        // Remove completed tasks from the daily list
-        dailyMinorTasks.RemoveAll(task => IsTaskComplete(task));
+
+        completedMinorTasks.Clear();
+        dailyMinorTasks.Clear();
 
         SelectDailyTasks();
         RefreshAllTaskUIs();

@@ -22,6 +22,14 @@ public class GameEventManager : MonoBehaviour
     [SerializeField] private Button cleanButton;
     [SerializeField] private Button playButton;
 
+    [Header("UI Control")]
+    [SerializeField] private GameObject inputBlockerPanel;
+    [Tooltip("Drag the DialogueView GameObject here")]
+    [SerializeField] private GraphicRaycaster dialogueRaycaster;
+
+    [Header("End Game")]
+    [SerializeField] private GameObject endGameSplashScreen;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
@@ -54,6 +62,10 @@ public class GameEventManager : MonoBehaviour
             // --- GAMEPLAY EVENTS ---
             case "Prologue_LightsUp":
                 Prologue_RoomLightsUp();
+                break;
+
+            case "Ch4_LightsDown":
+                StartCoroutine(RoomLightsDownSequence());
                 break;
 
             case "ShowLoginScreen":
@@ -89,8 +101,12 @@ public class GameEventManager : MonoBehaviour
                 StartCoroutine(CleanTutorialSequence());
                 break;
 
+            case "PetStageChange":
+                PetAnimationManager.Instance.StageChange();
+                break;
+
             case "PanelDefault":
-                SetPanelAlpha(0.5058824f);
+                SetPanelAlpha(0.505f);
                 break;
 
             case "PanelBlack":
@@ -101,9 +117,16 @@ public class GameEventManager : MonoBehaviour
                 SetPanelAlpha(0);
                 break;
 
-            
+
 
             // Add more cases here for future events
+            case "CheckUsernameAndEndGame":
+                CheckUsernameAndEndGame();
+                break;
+
+            case "EjectPlayer":
+                StartCoroutine(EjectPlayerSequence());
+                break;
 
             default:
                 Debug.LogWarning($"GameEventManager: Unknown event called: {eventName}");
@@ -120,6 +143,8 @@ public class GameEventManager : MonoBehaviour
     }
     private IEnumerator RoomLightsUpSequence()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
         Debug.Log("Starting prologue sequence: Room lights up.");
 
         foreach (var light in roomLights)
@@ -134,18 +159,42 @@ public class GameEventManager : MonoBehaviour
         foreach (var light in roomLights)
         {
             light.enabled = true;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
         }
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
+    }
+
+    private IEnumerator RoomLightsDownSequence()
+    {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
+        Debug.Log("Starting prologue sequence: Room lights up.");
+
+        foreach (var light in roomLights)
+        {
+            light.enabled = true;
+        }
+
+        if (fadePanelAnimator != null) fadePanelAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(1.5f);
+
+        foreach (var light in roomLights)
+        {
+            light.enabled = false;
+            yield return new WaitForSeconds(0.4f);
+        }
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
     public void ShowLoginScreen()
     {
-        if (PlayerData.Instance) PlayerData.Instance.isPrologueComplete = false;
         ViewManager.Instance.GoToLoginView();
     }
 
     public void ShowPetCareScreen()
     {
-        if (PlayerData.Instance) PlayerData.Instance.isPrologueComplete = false;
         ViewManager.Instance.GoToPetCareView();
     }
 
@@ -155,6 +204,9 @@ public class GameEventManager : MonoBehaviour
     }
     private IEnumerator TriggerRebootSequenceDesktop()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
+
         ViewManager.Instance.HideAllViews();
         yield return new WaitForSeconds(0.5f);
         ViewManager.Instance.GoToDesktopView();
@@ -166,10 +218,16 @@ public class GameEventManager : MonoBehaviour
         ViewManager.Instance.HideAllViews();
         yield return new WaitForSeconds(0.5f);
         ViewManager.Instance.GoToDesktopView();
+
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
 
     private IEnumerator TriggerRebootSequencePetCare()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
+
         ViewManager.Instance.HideAllViews();
         yield return new WaitForSeconds(0.3f);
         ViewManager.Instance.GoToDesktopView();
@@ -186,6 +244,8 @@ public class GameEventManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         ViewManager.Instance.GoToPetCareView();
         EnablePetCareButtons();
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
 
     private void DisablePetCareButtons()
@@ -216,6 +276,8 @@ public class GameEventManager : MonoBehaviour
 
     private IEnumerator FeedTutorialSequence()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
         Debug.Log("Starting Feed Tutorial Sequence...");
 
         ViewManager.Instance.HideAllViews();
@@ -233,10 +295,16 @@ public class GameEventManager : MonoBehaviour
 
         DisablePetCareButtons();
         EnableButton(feedButton);
+
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
 
     private IEnumerator PlayTutorialSequence()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
+
         Debug.Log("Starting Play Tutorial Sequence...");
 
         ViewManager.Instance.GoToPetCareView();
@@ -246,10 +314,16 @@ public class GameEventManager : MonoBehaviour
         petCareUIManager.HideAllPanels();
         DisablePetCareButtons();
         EnableButton(playButton);
+
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
 
     private IEnumerator CleanTutorialSequence()
     {
+        inputBlockerPanel.SetActive(true);
+        dialogueRaycaster.enabled = false;
+
         Debug.Log("Starting Clean Tutorial Sequence...");
 
         ViewManager.Instance.GoToPetCareView();
@@ -259,11 +333,13 @@ public class GameEventManager : MonoBehaviour
         petCareUIManager.HideAllPanels();
         DisablePetCareButtons();
         EnableButton(cleanButton);
-
+        dialogueRaycaster.enabled = true;
+        inputBlockerPanel.SetActive(false);
     }
 
     private IEnumerator EndChapterSequence(int chapterToEnd)
     {
+        inputBlockerPanel.SetActive(true);
         Debug.Log($"Starting end sequence for Chapter {chapterToEnd}...");
 
         if (fadePanelAnimator != null)
@@ -284,6 +360,54 @@ public class GameEventManager : MonoBehaviour
 
         DayManager.Instance.AdvanceToNextChapter(chapterToEnd + 1);
         ViewManager.Instance.GoToLoginView();
+        if (fadePanelAnimator != null)
+        {
+            fadePanelAnimator.SetTrigger("FadeOut");
+        }
+        inputBlockerPanel.SetActive(false);
+    }
+
+    private void CheckUsernameAndEndGame()
+    {
+        if (SystemInfoManager.Instance == null || string.IsNullOrEmpty(SystemInfoManager.Instance.pcUsername))
+        {
+            DialogueManager.Instance.StartDialogue("YourDatabaseName", "FinalMessage_Normal");
+            return;
+        }
+
+        string username = SystemInfoManager.Instance.pcUsername;
+
+        if (username.Length <= 8)
+        {
+            DialogueManager.Instance.StartDialogue("Chapter4", "FinalMessage_Spaced");
+        }
+        else
+        {
+            DialogueManager.Instance.StartDialogue("Chapter4", "FinalMessage_Normal");
+        }
+    }
+
+    public IEnumerator EjectPlayerSequence()
+    {
+        Debug.Log("EVENT: Starting final eject sequence...");
+
+        if (endGameSplashScreen != null)
+        {
+            endGameSplashScreen.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(5f);
+
+        Debug.Log("Quitting application.");
+
+#if !UNITY_EDITOR
+            Application.Quit();
+#endif
+
+#if UNITY_EDITOR
+        Debug.LogWarning("Application.Quit() called! This would close the game in a real build.");
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
 }

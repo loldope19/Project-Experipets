@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a5c105c234420e4abc346c9b7308b86, type: 3}
-  m_Name: Ball_item
+  m_Name: Ball_Item
   m_EditorClassIdentifier: 
   itemName: Ball
   itemIcon: {fileID: 21300000, guid: 89f0fdfd2133ab9439e9187039144f36, type: 3}
@@ -21,4 +21,4 @@ MonoBehaviour:
   toolType: 5
   hungerEffect: 0
   cleanlinessEffect: 0
-  happinessEffect: 30
+  happinessEffect: 10

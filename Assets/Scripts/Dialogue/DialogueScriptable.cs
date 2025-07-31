@@ -32,6 +32,9 @@ public class DialogueOption
     /// The dialogue this option branches to, once finished, dialogue returns to this branch's next step (or ends if this dialogue step is the last). Leave null to not branch and simply continue to the next step.
     /// </summary>
     public DialogueScriptable DialogueBranch;
+
+    [Tooltip("(Optional) A separate dialogue to run AFTER the branch is complete, instead of returning to the main path.")]
+    public DialogueScriptable ConvergenceDialogue;
     /// <summary>
     /// The index to start the dialogue branch at, 0 is the first step
     /// </summary>

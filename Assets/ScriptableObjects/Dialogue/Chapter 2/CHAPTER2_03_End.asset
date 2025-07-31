@@ -54,7 +54,7 @@ MonoBehaviour:
   - CharacterName: 
     Text: "For a moment, its fur shifts strangely\u2026"
     DialogueOptions: []
-    eventToTrigger: PanelNone
+    eventToTrigger: PanelBlack
   - CharacterName: 
     Text: Almost like a second layer is twitching underneath.
     DialogueOptions: []

@@ -18,6 +18,7 @@ MonoBehaviour:
   description: A hearty, protein-rich cut of beef. Excellent for building strength
     and providing a long-lasting source of energy for more active experiments.
   category: 0
-  hungerEffect: 50
+  toolType: 0
+  hungerEffect: 40
   cleanlinessEffect: 0
   happinessEffect: 0

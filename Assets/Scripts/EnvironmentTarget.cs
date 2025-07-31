@@ -12,6 +12,7 @@ public enum DirtType
 public class EnvironmentTarget : MonoBehaviour
 {
     public DirtType dirtType;
+    private bool isCleaningTutorialComplete = false;
     void Start()
     {
         DayManager.messCount++;
@@ -28,9 +29,10 @@ public class EnvironmentTarget : MonoBehaviour
         Debug.Log($"Cleaning {gameObject.name}!");
         Destroy(gameObject);
         PetStats.Instance.Clean(5);
-        if (!PlayerData.Instance.isPrologueComplete)
+        if (!PlayerData.Instance.isPrologueComplete && !isCleaningTutorialComplete)
         {
             DialogueManager.Instance.StartDialogue("Prologue", "PROLOGUE_06_CleanTutorialComplete");
+            isCleaningTutorialComplete = true;
         }
     }
 }

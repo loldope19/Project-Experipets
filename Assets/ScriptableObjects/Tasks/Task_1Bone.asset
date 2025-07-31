@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cc50431af22ce4a9035d8a2fec0cd2, type: 3}
+  m_Name: Task_1Bone
+  m_EditorClassIdentifier: 
+  taskType: 0
+  taskCategory: 3
+  description: Let the Experiment chew on a Bone.
+  goalType: 1
+  amountToReach: 0
+  requiredItem: {fileID: 11400000, guid: f7ef71f7a6030ce40adf537f334628e4, type: 2}
+  requiredItemCount: 1
+  minorTasksRequired: 0
