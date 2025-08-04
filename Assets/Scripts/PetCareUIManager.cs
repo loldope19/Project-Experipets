@@ -11,7 +11,7 @@ public class PetCareUIManager : MonoBehaviour
     // Add other sub-menus here as you build them
 
     [Header("Notification Panels")]
-    [SerializeField] private GameObject majorTaskCompletedPopup;
+    [SerializeField] private GameObject popUpView;
 
     [Header("Specialized Inventory Panels")]
     [SerializeField] private PaginatedInventoryPanel foodInventoryPanel;
@@ -28,8 +28,7 @@ public class PetCareUIManager : MonoBehaviour
     private void Start()
     {
         HideAllSubMenus();
-        HideMajorTaskCompletedPopup();
-        // DialogueManager.Instance.StartDialogue("CoreFive", 0);
+        HideTasksCompletePopup();
     }
 
     private void Update()
@@ -136,19 +135,19 @@ public class PetCareUIManager : MonoBehaviour
     }
 
     // --- Functions for Pop-ups ---
-    public void ShowMajorTaskCompletedPopup()
+    public void ShowTasksCompletePopup()
     {
-        if (majorTaskCompletedPopup != null)
+        if (popUpView != null)
         {
-            majorTaskCompletedPopup.SetActive(true);
+            popUpView.SetActive(true);
         }
     }
 
-    public void HideMajorTaskCompletedPopup()
+    public void HideTasksCompletePopup()
     {
-        if (majorTaskCompletedPopup != null)
+        if (popUpView != null)
         {
-            majorTaskCompletedPopup.SetActive(false);
+            popUpView.SetActive(false);
         }
     }   
 

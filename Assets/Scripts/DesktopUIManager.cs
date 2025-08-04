@@ -23,9 +23,14 @@ public class DesktopUIManager : MonoBehaviour
 
     public void OnLogOutClicked()
     {
-        Debug.Log("Logging out...");
+        Debug.Log("Exit Game button clicked. Quitting application...");
         ToggleStartMenu();
-        ViewManager.Instance.GoToLoginView();
+
+        Application.Quit();
+        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     public void OnShutDownButtonClicked()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskType: 0
   taskCategory: 1
-  description: Feed the Experiment 3 Wet Food.
+  description: Feed the Experiment 3 Dog Food.
   goalType: 1
   amountToReach: 0
   requiredItem: {fileID: 11400000, guid: a2d2615eeee0f39458d5904c23ccd56d, type: 2}

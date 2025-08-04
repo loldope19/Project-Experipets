@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Lollipop_Item
   m_EditorClassIdentifier: 
   itemName: Lollipop
-  itemIcon: {fileID: 21300000, guid: 49d783b1bc08d3d408231850e5abf9a9, type: 3}
+  itemIcon: {fileID: 21300000, guid: 660ea69baaadb3441966abe1fcb363c6, type: 3}
   cost: 10
   description: A simple, sugary treat. Not very nutritious, but a guaranteed way
     to bring a little sweetness into any experiment's day.
   category: 2
+  toolType: 0
   hungerEffect: 5
   cleanlinessEffect: 0
-  happinessEffect: 2
+  happinessEffect: 5

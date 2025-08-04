@@ -21,4 +21,4 @@ MonoBehaviour:
   toolType: 4
   hungerEffect: 0
   cleanlinessEffect: 0
-  happinessEffect: 40
+  happinessEffect: 20

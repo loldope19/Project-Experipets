@@ -185,8 +185,16 @@ public class TaskManager : MonoBehaviour
                 taskCooldowns[task] = 3;
                 Debug.Log($"Minor Task Completed: {task.description}. Progress: {minorTasksCompletedThisChapter}");
 
-                CheckMajorTaskCompletion();
+                if (completedMinorTasks.Count == 3)
+                {
+                    if (uiManager != null)
+                    {
+                        uiManager.ShowTasksCompletePopup();
+                        Debug.Log("All minor tasks for the day are complete!");
+                    }
+                }
 
+                CheckMajorTaskCompletion();
                 RefreshAllTaskUIs();
             }
         }
