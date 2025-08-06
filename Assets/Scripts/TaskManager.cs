@@ -209,6 +209,7 @@ public class TaskManager : MonoBehaviour
         {
             Debug.Log($"MAJOR TASK COMPLETED: {activeMajorTask.description}");
 
+            AudioManager.Instance.PlaySFX(SfxType.task);
             DialogueData endDialogue = chapterEndDialogues.Find(d => d.chapterNumber == DayManager.Instance.GetCurrentChapter());
             if (endDialogue != null)
             {
@@ -218,8 +219,6 @@ public class TaskManager : MonoBehaviour
             {
                 Debug.LogWarning($"No end-of-chapter dialogue found for Chapter {DayManager.Instance.GetCurrentChapter()}!");
             }
-            // DayManager.Instance.CompleteMajorTask();
-            AudioManager.Instance.PlaySFX(SfxType.task);
         }
     }
 

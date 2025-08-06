@@ -11,11 +11,11 @@ The game also features a unique visual style where the pet and its interface are
 ![alt-text](https://github.com/loldope19/Project-Experipets/blob/main/image_2025-07-01_223721624.png "Experipets Sample")
 
 
-### Current Features (Prototype v0.5)
+### Current Features (Prototype v0.6)
 
-* **OS-Style UI Navigation:**
-    * A complete, single-scene UI managed by a `ViewManager`.
-    * Features a Login Screen, a main Desktop View with app icons, and separate "applications" for Pet Care and the Shop.
+* **Game Narrative Integration:**
+    * Dialogue is now added as part of Game progression.
+    * Story starts in a Prologue and ends in Chapter 4.
 * **Advanced Pet Care System:**
     * A virtual pet with Hunger, Cleanliness, and Happiness stats.
     * **Feed Interaction:** A fully functional drag-and-drop system for feeding items to the pet.
@@ -26,7 +26,7 @@ The game also features a unique visual style where the pet and its interface are
     * The environment dynamically becomes messy: trash appears after eating and poop appears daily.
     * The amount of mess directly impacts the pet's well-being by amplifying the end-of-day cleanliness decay, making cleanup a strategic necessity.
 * **Dynamic Task System:**
-    * A robust `TaskManager` that daily minor tasks and one major task per chapter.
+    * A robust `TaskManager` that gives three daily minor tasks and one major task per chapter.
     * Chapter progression is now tied to completing major tasks, not the day number.
     * The "Shut Down" button now correctly manages the end-of-day sequence, stat decay, and task refreshing.
 
@@ -62,24 +62,23 @@ To get a local copy up and running, follow these simple steps.
 6. Click the "Shop" button to buy more items as needed.
 7. "Shut Down" button within the Desktop progresses the day, but pet stats will decay.
 
-## 🗺️ Roadmap (Future Plans for v0.6 & Beyond)
+## 🗺️ Roadmap (Future Plans for v0.7 & Beyond)
 
 This is a very early prototype. Future development will focus on expanding the core loop and adding more depth:
 
 * **[X] Currency & Shop Systems:** *Implemented.*
 * **[X] Day & Stat Systems:** *Implemented.*
 * **[X] Task/To-Do System:** *Implemented.*
+* **[X] Dialogue System Integration:** *Implemented.*
+* **[X] Pet Animations & Feedback:** *Implemented.*
+* **[X] Sound Effects & Music:** *Implemented*
 * **[X] Advanced Interactions:**
-    * [X] Implement drag-and-drop item usage.
-    * [X] Different cleaning actions.
-    * [X] Unique mechanics for different toys (click-to-throw, aim-and-play, drag-and-drop).
+    * **[X]** Implement drag-and-drop item usage.
+    * **[X]** Different cleaning actions.
+    * **[X]** Unique mechanics for different toys (click-to-throw, aim-and-play, drag-and-drop).
 * **[ ] Photography & Documentation Loop:** Implement the pop-ups and camera sequence that replaces the simple "End Day" button.
-* **[ ] Dialogue System Integration:** Connect the existing dialogue mechanic to story triggers and events.
 * **[ ] Save/Load System:** Persist all game state (day, stats, inventory, currency, task progress) between sessions.
-    * [ ]Implement offline progression (needs continue to change while the game is closed).
-    * [ ] Implement pet movement in response to events (e.g., chasing a thrown ball).
-* **[ ] Pet Animations & Feedback:** Add animations for idle, eating, reacting, etc.
-* **[ ] Sound Effects & Music.**
+    * **[ ]** Implement offline progression (needs continue to change while the game is closed).
 
 ## 💻 Technologies Used
 
