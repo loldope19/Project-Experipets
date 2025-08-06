@@ -64,20 +64,25 @@ public class InteractableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, 
                     if (result.gameObject.TryGetComponent<PetRubTarget>(out PetRubTarget pet))
                     {
                         pet.ApplyCleaning();
+                        AudioManager.Instance.PlaySFX(SfxType.wash);
                     }
                     break;
 
                 case ToolType.Broom:
                     if (result.gameObject.TryGetComponent<EnvironmentTarget>(out EnvironmentTarget broomTarget))
                     {
-                        if (broomTarget.dirtType == DirtType.Dust) { broomTarget.Clean(); }
+                        if (broomTarget.dirtType == DirtType.Dust) { broomTarget.Clean();
+                            AudioManager.Instance.PlaySFX(SfxType.sweep);
+                        }
                     }
                     break;
 
                 case ToolType.Gloves:
                     if (result.gameObject.TryGetComponent<EnvironmentTarget>(out EnvironmentTarget gloveTarget))
                     {
-                        if (gloveTarget.dirtType == DirtType.Poop) { gloveTarget.Clean(); }
+                        if (gloveTarget.dirtType == DirtType.Poop) { gloveTarget.Clean(); 
+                            AudioManager.Instance.PlaySFX(SfxType.Clean);
+                        }
                     }
                     break;
             }

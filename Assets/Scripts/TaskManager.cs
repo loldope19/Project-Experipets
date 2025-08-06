@@ -184,6 +184,7 @@ public class TaskManager : MonoBehaviour
             if (uiManager != null) uiManager.ShowMajorTaskCompletedPopup();
 
             DayManager.Instance.CompleteMajorTask();
+            AudioManager.Instance.PlaySFX(SfxType.task);
         }
     }
 
