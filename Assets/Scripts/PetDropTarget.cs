@@ -36,6 +36,7 @@ public class PetDropTarget : MonoBehaviour, IDropHandler
             InventoryManager.Instance.UseItem(droppedItem);
 
             PetAnimationManager.Instance.Eat();
+            AudioManager.Instance.PlaySFX(SfxType.eat);
 
             Destroy(droppedObject);
             SpawnTrash();
@@ -48,12 +49,15 @@ public class PetDropTarget : MonoBehaviour, IDropHandler
             {
                 case ToolType.Ball:
                     PetAnimationManager.Instance.Ball();
+                    AudioManager.Instance.PlaySFX(SfxType.Ball);
                     break;
                 case ToolType.DraggableToy:
                     PetAnimationManager.Instance.Bone();
+                    AudioManager.Instance.PlaySFX(SfxType.toy);
                     break;
                 case ToolType.LaserPointer:
                     PetAnimationManager.Instance.Laser();
+                    AudioManager.Instance.PlaySFX(SfxType.laser);
                     break;
             }
 

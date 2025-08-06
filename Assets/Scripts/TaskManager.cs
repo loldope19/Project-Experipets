@@ -218,6 +218,8 @@ public class TaskManager : MonoBehaviour
             {
                 Debug.LogWarning($"No end-of-chapter dialogue found for Chapter {DayManager.Instance.GetCurrentChapter()}!");
             }
+            // DayManager.Instance.CompleteMajorTask();
+            AudioManager.Instance.PlaySFX(SfxType.task);
         }
     }
 
